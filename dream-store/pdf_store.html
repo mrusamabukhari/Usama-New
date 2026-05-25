@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #fff7ed;
+      color: #1e1b18;
+      width: 210mm;
+    }
+
+    /* ── PAGE 1: COVER ─────────────────────────────── */
+    .cover {
+      width: 210mm;
+      height: 297mm;
+      background: linear-gradient(160deg, #fce7f3 0%, #f5d0fe 35%, #fdf2f8 60%, #fef9c3 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+
+    /* background circles */
+    .cover::before {
+      content: '';
+      position: absolute;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(244,114,182,0.3) 0%, transparent 70%);
+      top: -80px; left: -80px;
+      border-radius: 50%;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(192,132,252,0.25) 0%, transparent 70%);
+      bottom: -60px; right: -60px;
+      border-radius: 50%;
+    }
+
+    .cover-badge {
+      width: 120px; height: 120px;
+      background: white;
+      border-radius: 50%;
+      border: 5px solid #f472b6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 40px rgba(244,114,182,0.4);
+      position: relative; z-index: 2;
+    }
+    .cover-badge .big-emoji { font-size: 3rem; }
+    .cover-badge .badge-text {
+      font-size: 7px;
+      color: #be185d;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      font-family: Arial, sans-serif;
+    }
+
+    .cover h1 {
+      font-size: 52pt;
+      color: #be185d;
+      text-align: center;
+      line-height: 1.1;
+      position: relative; z-index: 2;
+      text-shadow: 2px 3px 10px rgba(190,24,93,0.2);
+    }
+    .cover h1 span { color: #d97706; }
+
+    .cover-tagline {
+      font-family: Arial, sans-serif;
+      font-size: 10pt;
+      letter-spacing: 4px;
+      color: #9d174d;
+      text-transform: uppercase;
+      margin: 18px 0 24px;
+      position: relative; z-index: 2;
+    }
+
+    .cover-desc {
+      max-width: 130mm;
+      text-align: center;
+      font-size: 11pt;
+      color: #6b21a8;
+      line-height: 1.8;
+      position: relative; z-index: 2;
+      margin-bottom: 36px;
+    }
+
+    .cover-divider {
+      width: 80px; height: 4px;
+      background: linear-gradient(90deg, #f472b6, #fbbf24);
+      border-radius: 2px;
+      margin: 0 auto 36px;
+      position: relative; z-index: 2;
+    }
+
+    /* floating emojis on cover */
+    .fe {
+      position: absolute;
+      font-size: 28pt;
+      z-index: 1;
+      opacity: 0.7;
+    }
+
+    .cover-stats {
+      display: flex;
+      gap: 30px;
+      position: relative; z-index: 2;
+    }
+    .cs-item { text-align: center; }
+    .cs-num {
+      font-size: 22pt;
+      font-weight: bold;
+      color: #be185d;
+    }
+    .cs-label {
+      font-family: Arial, sans-serif;
+      font-size: 7pt;
+      letter-spacing: 2px;
+      color: #7c3aed;
+      text-transform: uppercase;
+    }
+
+    .cover-bottom {
+      position: absolute;
+      bottom: 30px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      color: rgba(157,23,77,0.6);
+      z-index: 2;
+    }
+
+    /* ── PAGE 2: PRODUCTS ──────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 18mm 15mm;
+      page-break-after: always;
+      background: white;
+    }
+    .page-pink { background: linear-gradient(180deg, #fff7ed 0%, white 100%); }
+    .page-purple { background: linear-gradient(180deg, #fdf4ff 0%, white 100%); }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 8mm;
+    }
+    .section-title {
+      font-size: 26pt;
+      color: #be185d;
+      margin-bottom: 4px;
+    }
+    .section-sub {
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      letter-spacing: 3px;
+      color: #9d174d;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .mini-divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, #f472b6, #fbbf24);
+      border-radius: 2px;
+      margin: 0 auto;
+    }
+
+    /* product cards grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6mm;
+      margin-top: 8mm;
+    }
+
+    .product-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(244,114,182,0.18);
+    }
+
+    .card-top {
+      height: 38mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .card-top .emoji { font-size: 28pt; }
+    .card-top .card-badge {
+      position: absolute;
+      top: 6px; right: 6px;
+      background: #be185d;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 6pt;
+      font-weight: bold;
+      padding: 2px 7px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .bg-pink   { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+    .bg-green  { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .bg-yellow { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+    .bg-red    { background: linear-gradient(135deg, #fff1f2, #ffe4e6); }
+    .bg-purple { background: linear-gradient(135deg, #fdf4ff, #fce7f3); }
+    .bg-blue   { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+
+    .card-body {
+      background: white;
+      padding: 5mm;
+    }
+    .card-body h3 {
+      font-size: 10pt;
+      color: #1e1b18;
+      margin-bottom: 3px;
+    }
+    .card-body p {
+      font-family: Arial, sans-serif;
+      font-size: 7pt;
+      color: #52525b;
+      line-height: 1.6;
+      margin-bottom: 5px;
+    }
+    .card-price {
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      font-weight: bold;
+      color: #be185d;
+    }
+
+    /* ── PAGE 3: PROCESS + ABOUT ───────────────────── */
+    .process-banner {
+      background: linear-gradient(135deg, #be185d 0%, #7c3aed 50%, #be185d 100%);
+      border-radius: 12px;
+      padding: 10mm;
+      margin-bottom: 8mm;
+      color: white;
+      text-align: center;
+    }
+    .process-banner h2 { font-size: 18pt; margin-bottom: 4px; }
+    .process-banner .sub {
+      font-family: Arial, sans-serif;
+      font-size: 7pt;
+      opacity: 0.7;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8mm;
+    }
+
+    .steps-row {
+      display: flex;
+      gap: 5mm;
+      justify-content: center;
+    }
+    .step-box {
+      flex: 1;
+      text-align: center;
+    }
+    .step-circle {
+      width: 50px; height: 50px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18pt;
+      margin: 0 auto 5px;
+    }
+    .step-box h4 {
+      font-size: 8pt;
+      margin-bottom: 3px;
+    }
+    .step-box p {
+      font-family: Arial, sans-serif;
+      font-size: 6.5pt;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    /* about 2-col */
+    .about-row {
+      display: flex;
+      gap: 8mm;
+      align-items: flex-start;
+    }
+    .about-visual {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+    }
+    .av-box {
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8mm 4mm;
+      font-size: 22pt;
+      text-align: center;
+    }
+    .av-box span {
+      font-family: Arial, sans-serif;
+      font-size: 7pt;
+      color: #374151;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+    .av-wide { grid-column: span 2; }
+
+    .about-text { flex: 1; }
+    .about-text h2 { font-size: 16pt; color: #be185d; margin-bottom: 6px; }
+    .about-text p  {
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      color: #374151;
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+    .bullet-list { list-style: none; margin-top: 4px; }
+    .bullet-list li {
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      color: #374151;
+      margin-bottom: 5px;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .bullet-list li::before {
+      content: '✦';
+      color: #f472b6;
+      position: absolute;
+      left: 0;
+      font-size: 7pt;
+    }
+
+    /* ── PAGE 4: TESTIMONIALS + FOOTER ─────────────── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6mm;
+      margin-top: 8mm;
+    }
+    .testi-card {
+      background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+      border-radius: 10px;
+      padding: 6mm;
+    }
+    .quote {
+      font-size: 22pt;
+      color: #f472b6;
+      opacity: 0.4;
+      line-height: 0.8;
+      margin-bottom: 2px;
+    }
+    .stars { color: #fbbf24; font-size: 9pt; margin-bottom: 4px; }
+    .testi-text {
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      color: #374151;
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 7px;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .testi-av {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, #f472b6, #c084fc);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12pt;
+    }
+    .testi-name {
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      font-weight: bold;
+      color: #1e1b18;
+    }
+    .testi-loc {
+      font-family: Arial, sans-serif;
+      font-size: 6pt;
+      color: #9ca3af;
+    }
+
+    /* PDF Footer banner */
+    .footer-banner {
+      background: linear-gradient(135deg, #1e1b18 0%, #3b0f1a 100%);
+      border-radius: 12px;
+      padding: 12mm;
+      margin-top: 8mm;
+      text-align: center;
+      color: white;
+    }
+    .footer-banner .fl { font-size: 24pt; color: #f472b6; margin-bottom: 3px; }
+    .footer-banner .ft { font-family: Arial, sans-serif; font-size: 7pt; letter-spacing: 3px; color: #fbbf24; text-transform: uppercase; margin-bottom: 8mm; }
+    .footer-socials { display: flex; justify-content: center; gap: 8mm; margin-bottom: 8mm; }
+    .footer-social {
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+      color: rgba(255,255,255,0.7);
+    }
+    .footer-copy { font-family: Arial, sans-serif; font-size: 7pt; color: rgba(255,255,255,0.35); }
+
+    /* contact strip */
+    .contact-strip {
+      background: linear-gradient(90deg, #fce7f3, #ede9fe, #fef9c3, #fce7f3);
+      border-radius: 10px;
+      padding: 6mm 10mm;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 6mm;
+    }
+    .contact-item {
+      text-align: center;
+    }
+    .contact-item .ci-icon { font-size: 16pt; }
+    .contact-item .ci-label {
+      font-family: Arial, sans-serif;
+      font-size: 7pt;
+      font-weight: bold;
+      color: #be185d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 3px;
+    }
+    .contact-item .ci-val {
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ PAGE 1: COVER ══════════ -->
+<div class="cover">
+  <!-- floating emojis -->
+  <div class="fe" style="top:40px;left:30px;">🍬</div>
+  <div class="fe" style="top:50px;right:35px;">💐</div>
+  <div class="fe" style="bottom:100px;left:25px;">🧶</div>
+  <div class="fe" style="bottom:90px;right:30px;">🍩</div>
+  <div class="fe" style="top:45%;left:15px;">💝</div>
+  <div class="fe" style="top:40%;right:18px;">🎀</div>
+  <div class="fe" style="top:70px;left:50%;">⭐</div>
+
+  <div class="cover-badge">
+    <div class="big-emoji">🌸</div>
+    <div class="badge-text">EMMA.CREATIONZ</div>
+  </div>
+
+  <h1>Emma.<span>Creationz</span></h1>
+  <p class="cover-tagline">Blooms &amp; Bouquets · Wrapping Feelings</p>
+
+  <div class="cover-divider"></div>
+
+  <p class="cover-desc">
+    Handcrafted with love 💕 — from dreamy candy bouquets &amp; money flowers
+    to cozy crochet gifts &amp; freshly baked treats.<br/>
+    Every creation wraps a feeling you can't find in any store.
+  </p>
+
+  <div class="cover-stats">
+    <div class="cs-item">
+      <div class="cs-num">500+</div>
+      <div class="cs-label">Happy Customers</div>
+    </div>
+    <div class="cs-item">
+      <div class="cs-num">100%</div>
+      <div class="cs-label">Handmade</div>
+    </div>
+    <div class="cs-item">
+      <div class="cs-num">6+</div>
+      <div class="cs-label">Gift Types</div>
+    </div>
+    <div class="cs-item">
+      <div class="cs-num">❤️</div>
+      <div class="cs-label">Made with Love</div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    @emma.creationz · instagram.com/emma.creationz · Pakistan
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 2: PRODUCTS ══════════ -->
+<div class="page page-pink">
+  <div class="section-header">
+    <p class="section-title">Our Dream Collections</p>
+    <p class="section-sub">Wrapped with Heart, Made with Soul</p>
+    <div class="mini-divider"></div>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="card-top bg-pink">
+        <div class="emoji">🍬🍫</div>
+        <div class="card-badge">Best Seller</div>
+      </div>
+      <div class="card-body">
+        <h3>Candy Bouquet</h3>
+        <p>Lays, Cadbury, Chili Mili &amp; more — wrapped in dreamy paper with your personalized name tag &amp; satin bow.</p>
+        <div class="card-price">From PKR 350</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="card-top bg-green">
+        <div class="emoji">🧶🐱</div>
+        <div class="card-badge">Handmade</div>
+      </div>
+      <div class="card-body">
+        <h3>Crochet Creations</h3>
+        <p>Adorable Hello Kitty bags, bows &amp; keychains. Each piece knitted by hand with premium soft yarn.</p>
+        <div class="card-price">From PKR 200</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="card-top bg-yellow">
+        <div class="emoji">💵🌹</div>
+        <div class="card-badge">Trending</div>
+      </div>
+      <div class="card-body">
+        <h3>Money Bouquet</h3>
+        <p>Currency notes folded into gorgeous flowers — the most unique gifting idea for birthdays &amp; Eids!</p>
+        <div class="card-price">Customizable</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="card-top bg-red">
+        <div class="emoji">🍩🧁</div>
+        <div class="card-badge">Fresh Baked</div>
+      </div>
+      <div class="card-body">
+        <h3>Baked Treats</h3>
+        <p>Chocolate donuts with rainbow sprinkles &amp; cupcakes with custom sign toppers. Freshly made with love.</p>
+        <div class="card-price">From PKR 250</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="card-top bg-purple">
+        <div class="emoji">💐🎀</div>
+        <div class="card-badge">Custom</div>
+      </div>
+      <div class="card-body">
+        <h3>Blooms &amp; Bouquets</h3>
+        <p>Fresh flower bouquets in premium tissue with ribbons, pearls &amp; a personalized card. Say it with flowers.</p>
+        <div class="card-price">From PKR 400</div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="card-top bg-blue">
+        <div class="emoji">🎨💌</div>
+        <div class="card-badge">✦ Special</div>
+      </div>
+      <div class="card-body">
+        <h3>Custom Gift Box</h3>
+        <p>Mix &amp; match from our full range. We'll package it beautifully with your personal message inside.</p>
+        <div class="card-price">Fully Custom</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 3: PROCESS + ABOUT ══════════ -->
+<div class="page page-purple">
+
+  <!-- How It Works -->
+  <div class="process-banner">
+    <h2>How It Works</h2>
+    <p class="sub">Simple · Sweet · Seamless</p>
+    <div class="steps-row">
+      <div class="step-box">
+        <div class="step-circle">📲</div>
+        <h4>1. Place Order</h4>
+        <p>DM us on Instagram @emma.creationz with your request &amp; details.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-circle">🎨</div>
+        <h4>2. We Create</h4>
+        <p>Our hands get to work crafting your personalized masterpiece.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-circle">🎀</div>
+        <h4>3. We Wrap</h4>
+        <p>Everything is beautifully wrapped with ribbon, bows &amp; a name tag.</p>
+      </div>
+      <div class="step-box">
+        <div class="step-circle">🚀</div>
+        <h4>4. Delivered</h4>
+        <p>Your gift reaches your loved one fresh, safe &amp; full of surprises!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="section-header" style="margin-top:8mm;margin-bottom:6mm;">
+    <p class="section-title">Our Story 💕</p>
+    <p class="section-sub">More Than Gifts — We Wrap Feelings</p>
+    <div class="mini-divider"></div>
+  </div>
+
+  <div class="about-row">
+    <div class="about-visual">
+      <div class="av-box bg-pink av-wide">🍬🍫🎊<br/><span>Candy Bouquets</span></div>
+      <div class="av-box bg-green">🧶💕<br/><span>Crochet</span></div>
+      <div class="av-box bg-yellow">💵🌹<br/><span>Money Bouquet</span></div>
+      <div class="av-box bg-blue av-wide">🍩🧁✨<br/><span>Baked Goodies</span></div>
+    </div>
+
+    <div class="about-text">
+      <h2>Made with Love, Wrapped with Heart</h2>
+      <p>
+        Emma.Creationz was born from one girl's passion for making people smile.
+        Every bouquet, every crochet item, every baked treat is crafted personally
+        — with intention, creativity, and heart.
+      </p>
+      <p>
+        We believe the best gifts are the ones made with your own hands — because
+        no store can replicate that feeling of receiving something truly personal.
+      </p>
+      <ul class="bullet-list">
+        <li>100% handmade with premium materials</li>
+        <li>Custom name tags on every single order</li>
+        <li>Same-day preparation available</li>
+        <li>Affordable pricing for every budget</li>
+        <li>Packaging that feels as good as the gift</li>
+        <li>Made with trust, love &amp; wrapping feelings ✨</li>
+        <li>Based in Pakistan — delivering smiles locally</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 4: TESTIMONIALS + FOOTER ══════════ -->
+<div class="page" style="page-break-after:auto;">
+
+  <div class="section-header">
+    <p class="section-title">What People Say 💬</p>
+    <p class="section-sub">Real Love from Real Customers</p>
+    <div class="mini-divider"></div>
+  </div>
+
+  <div class="testi-grid">
+
+    <div class="testi-card">
+      <div class="quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The candy bouquet was STUNNING — my friend literally cried! The packaging was so beautiful and the personal name tag made it extra special. 100% ordering again!</p>
+      <div class="testi-author">
+        <div class="testi-av">👧</div>
+        <div>
+          <div class="testi-name">Meerab A.</div>
+          <div class="testi-loc">Lahore, Pakistan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Ordered the money bouquet for my cousin's Eid. Everyone was asking where I got it! Emma puts so much effort into every detail. Love this store so much!</p>
+      <div class="testi-author">
+        <div class="testi-av">🧕</div>
+        <div>
+          <div class="testi-name">Zimal K.</div>
+          <div class="testi-loc">Karachi, Pakistan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="quote">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The crochet Hello Kitty bag is so adorable I don't even want to use it! Perfectly made, soft yarn, clean stitches. Emma is super talented mashallah!</p>
+      <div class="testi-author">
+        <div class="testi-av">💁</div>
+        <div>
+          <div class="testi-name">Hira F.</div>
+          <div class="testi-loc">Islamabad, Pakistan</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Contact Strip -->
+  <div class="contact-strip">
+    <div class="contact-item">
+      <div class="ci-icon">📸</div>
+      <div class="ci-label">Instagram</div>
+      <div class="ci-val">@emma.creationz</div>
+    </div>
+    <div class="contact-item">
+      <div class="ci-icon">📍</div>
+      <div class="ci-label">Location</div>
+      <div class="ci-val">Pakistan</div>
+    </div>
+    <div class="contact-item">
+      <div class="ci-icon">💬</div>
+      <div class="ci-label">Orders via</div>
+      <div class="ci-val">Instagram DM</div>
+    </div>
+    <div class="contact-item">
+      <div class="ci-icon">🕐</div>
+      <div class="ci-label">Processing</div>
+      <div class="ci-val">Same Day Available</div>
+    </div>
+  </div>
+
+  <!-- Footer Banner -->
+  <div class="footer-banner">
+    <div class="fl">Emma.Creationz 🌸</div>
+    <div class="ft">Blooms &amp; Bouquets · Wrapping Feelings</div>
+    <div class="footer-socials">
+      <div class="footer-social">📸 instagram.com/emma.creationz</div>
+      <div class="footer-social">💌 Order via Instagram DM</div>
+      <div class="footer-social">🇵🇰 Made in Pakistan</div>
+    </div>
+    <div class="footer-copy">© 2025 Emma.Creationz · All Creations 100% Handmade · Made with 💕</div>
+  </div>
+
+</div>
+
+</body>
+</html>
