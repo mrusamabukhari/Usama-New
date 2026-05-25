@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emma.Creationz – Dream Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pink:     #f472b6;
+      --rose:     #fb7185;
+      --deep:     #be185d;
+      --purple:   #c084fc;
+      --gold:     #fbbf24;
+      --cream:    #fff7ed;
+      --white:    #ffffff;
+      --dark:     #1e1b18;
+      --soft:     #fce7f3;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fce7f3 0%, #fdf2f8 30%, #fff0fb 60%, #fef9c3 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* floating blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: .35;
+      animation: float 8s ease-in-out infinite;
+    }
+    .blob-1 { width:420px;height:420px;background:#f9a8d4;top:-100px;left:-100px;animation-delay:0s; }
+    .blob-2 { width:300px;height:300px;background:#c084fc;top:60%;right:-80px;animation-delay:2s; }
+    .blob-3 { width:260px;height:260px;background:#fbbf24;bottom:-60px;left:30%;animation-delay:4s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* confetti dots */
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%,100% { opacity:.6; transform: scale(1); }
+      50%      { opacity:1;  transform: scale(1.4); }
+    }
+
+    .logo-badge {
+      width: 110px; height: 110px;
+      background: white;
+      border-radius: 50%;
+      border: 4px solid var(--pink);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 30px rgba(244,114,182,.35);
+      animation: pulse-logo 3s ease-in-out infinite;
+    }
+    @keyframes pulse-logo {
+      0%,100% { box-shadow: 0 8px 30px rgba(244,114,182,.35); }
+      50%      { box-shadow: 0 8px 50px rgba(244,114,182,.7); }
+    }
+    .logo-badge .emoji { font-size: 2.4rem; }
+    .logo-badge .logo-name {
+      font-family: 'Dancing Script', cursive;
+      font-size: .72rem;
+      color: var(--deep);
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--deep);
+      line-height: 1.1;
+      text-shadow: 2px 4px 20px rgba(190,24,93,.2);
+      position: relative; z-index: 2;
+    }
+    h1 span { color: var(--gold); }
+
+    .tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(.9rem, 2.5vw, 1.3rem);
+      color: #9d174d;
+      margin: 14px 0 30px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative; z-index: 2;
+    }
+
+    .hero-desc {
+      max-width: 560px;
+      color: #6b21a8;
+      font-size: .97rem;
+      line-height: 1.8;
+      position: relative; z-index: 2;
+      margin-bottom: 36px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--deep), var(--purple));
+      color: white;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 25px rgba(190,24,93,.4);
+      transition: transform .3s, box-shadow .3s;
+      position: relative; z-index: 2;
+      cursor: pointer; border: none;
+    }
+    .cta-btn:hover { transform: translateY(-4px); box-shadow: 0 14px 35px rgba(190,24,93,.55); }
+
+    /* floating product emojis */
+    .float-item {
+      position: absolute;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      animation: floatItem 6s ease-in-out infinite;
+      z-index: 1; pointer-events: none;
+    }
+    @keyframes floatItem {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* ─── SECTION COMMONS ──────────────────────────── */
+    section { padding: 90px 20px; }
+    .section-title {
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      color: var(--deep);
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #9d174d;
+      font-size: .95rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 60px;
+    }
+    .divider {
+      width: 80px; height: 4px;
+      background: linear-gradient(90deg, var(--pink), var(--gold));
+      border-radius: 2px;
+      margin: 14px auto 0;
+    }
+
+    /* ─── PRODUCTS ─────────────────────────────────── */
+    .products { background: white; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(244,114,182,.15);
+      transition: transform .35s, box-shadow .35s;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(244,114,182,.3);
+    }
+
+    .card-img {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* individual card backgrounds */
+    .card-candy   .card-img { background: linear-gradient(135deg, #fce7f3, #ede9fe); }
+    .card-crochet .card-img { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .card-money   .card-img { background: linear-gradient(135deg, #fef9c3, #fef3c7); }
+    .card-cake    .card-img { background: linear-gradient(135deg, #fff1f2, #ffe4e6); }
+    .card-bouquet .card-img { background: linear-gradient(135deg, #fdf4ff, #fce7f3); }
+    .card-custom  .card-img { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+
+    .badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: linear-gradient(135deg, var(--deep), var(--purple));
+      color: white;
+      font-size: .72rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: .5px;
+    }
+
+    .card-body { padding: 22px; }
+    .card-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.18rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .card-body p {
+      color: #71717a;
+      font-size: .88rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--deep);
+    }
+    .order-btn {
+      background: linear-gradient(135deg, var(--pink), var(--rose));
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+    }
+    .order-btn:hover { transform: scale(1.05); opacity: .9; }
+
+    /* ─── PROCESS BANNER ───────────────────────────── */
+    .process {
+      background: linear-gradient(135deg, var(--deep) 0%, #7c3aed 50%, var(--deep) 100%);
+      color: white;
+    }
+    .process .section-title { color: white; }
+    .process .section-sub   { color: rgba(255,255,255,.7); }
+    .process .divider       { background: linear-gradient(90deg, var(--gold), white); }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .step {
+      text-align: center;
+      width: 200px;
+    }
+    .step-icon {
+      width: 80px; height: 80px;
+      background: rgba(255,255,255,.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      transition: transform .3s;
+    }
+    .step:hover .step-icon { transform: scale(1.15) rotate(8deg); }
+    .step h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 8px; }
+    .step p  { font-size: .83rem; opacity: .8; line-height: 1.7; }
+
+    /* ─── SHOWCASE BANNER ──────────────────────────── */
+    .showcase {
+      background: linear-gradient(135deg, #fdf2f8, #fce7f3, #ede9fe);
+    }
+    .showcase-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    @media(max-width:768px){ .showcase-inner { grid-template-columns: 1fr; } }
+
+    .showcase-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .sv-box {
+      border-radius: 20px;
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      transition: transform .3s;
+    }
+    .sv-box:hover { transform: scale(1.05); }
+    .sv-box span  { font-size: .75rem; font-family:'Poppins',sans-serif; color:#374151; font-weight:600; margin-top:6px; }
+    .sv-1 { background: linear-gradient(135deg, #fce7f3, #fbcfe8); grid-column: span 2; height: 160px; }
+    .sv-2 { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .sv-3 { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+    .sv-4 { background: linear-gradient(135deg, #eff6ff, #dbeafe); grid-column: span 2; }
+
+    .showcase-text h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--deep);
+      margin-bottom: 18px;
+    }
+    .showcase-text p {
+      color: #374151;
+      font-size: .95rem;
+      line-height: 1.9;
+      margin-bottom: 14px;
+    }
+    .highlight-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+    .highlight-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #374151;
+      font-size: .9rem;
+      margin-bottom: 10px;
+    }
+    .highlight-list li::before {
+      content: '✦';
+      color: var(--pink);
+      font-size: .9rem;
+    }
+
+    /* ─── TESTIMONIALS ─────────────────────────────── */
+    .testimonials { background: white; }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .testi-card {
+      background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(244,114,182,.12);
+    }
+    .quote-mark {
+      font-size: 4rem;
+      color: var(--pink);
+      line-height: .8;
+      font-family: 'Playfair Display', serif;
+      opacity: .4;
+    }
+    .testi-text {
+      color: #374151;
+      font-size: .9rem;
+      line-height: 1.8;
+      margin: 8px 0 20px;
+      font-style: italic;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testi-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .testi-name { font-weight: 600; font-size: .9rem; color: var(--dark); }
+    .testi-loc  { font-size: .78rem; color: #9ca3af; }
+    .stars { color: var(--gold); font-size: .85rem; margin-bottom: 4px; }
+
+    /* ─── FOOTER ───────────────────────────────────── */
+    footer {
+      background: linear-gradient(135deg, var(--dark) 0%, #1a0a0f 100%);
+      color: white;
+      text-align: center;
+      padding: 70px 20px;
+    }
+    footer .footer-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      color: var(--pink);
+      margin-bottom: 8px;
+    }
+    footer .footer-tagline {
+      color: var(--gold);
+      letter-spacing: 3px;
+      font-size: .85rem;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .footer-links a {
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      font-size: .88rem;
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--pink); }
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .social-icon {
+      width: 46px; height: 46px;
+      background: rgba(255,255,255,.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+    .social-icon:hover { background: var(--pink); transform: scale(1.1); }
+    .footer-copy { color: rgba(255,255,255,.35); font-size: .8rem; }
+
+    /* ─── TOP NAV ──────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(255,247,237,.85);
+      border-bottom: 1px solid rgba(244,114,182,.2);
+      padding: 14px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.7rem;
+      color: var(--deep);
+      font-weight: 700;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      text-decoration: none;
+      color: #374151;
+      font-size: .88rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--deep); }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--deep), var(--purple));
+      color: white !important;
+      padding: 8px 22px;
+      border-radius: 20px;
+      font-size: .85rem !important;
+    }
+
+    /* ─── STATS STRIP ──────────────────────────────── */
+    .stats {
+      background: linear-gradient(90deg, #fce7f3, #ede9fe, #fef9c3, #fce7f3);
+      padding: 40px 20px;
+    }
+    .stats-inner {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 50px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--deep);
+    }
+    .stat-label {
+      font-size: .82rem;
+      color: #6b21a8;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Emma.Creationz 🌸</div>
+  <div class="nav-links">
+    <a href="#products">Shop</a>
+    <a href="#process">How It Works</a>
+    <a href="#about">About</a>
+    <a href="#order" class="nav-cta">Order Now ✨</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:80px;">
+  <!-- blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- confetti dots -->
+  <div class="dot" style="width:12px;height:12px;background:#f472b6;top:20%;left:15%;animation-delay:.5s;"></div>
+  <div class="dot" style="width:8px;height:8px;background:#fbbf24;top:35%;right:18%;animation-delay:1s;"></div>
+  <div class="dot" style="width:10px;height:10px;background:#c084fc;top:70%;left:25%;animation-delay:1.5s;"></div>
+  <div class="dot" style="width:14px;height:14px;background:#fb7185;top:55%;right:12%;animation-delay:.8s;"></div>
+  <div class="dot" style="width:6px;height:6px;background:#4ade80;top:15%;right:35%;animation-delay:2s;"></div>
+
+  <!-- floating emojis -->
+  <div class="float-item" style="top:15%;left:8%;animation-delay:0s;">🍬</div>
+  <div class="float-item" style="top:20%;right:10%;animation-delay:1s;">💐</div>
+  <div class="float-item" style="top:65%;left:6%;animation-delay:2s;">🧶</div>
+  <div class="float-item" style="top:70%;right:8%;animation-delay:1.5s;">🍩</div>
+  <div class="float-item" style="top:45%;left:3%;animation-delay:.5s;">💝</div>
+  <div class="float-item" style="top:80%;right:20%;animation-delay:3s;">🎀</div>
+  <div class="float-item" style="top:10%;left:45%;animation-delay:2.5s;">⭐</div>
+
+  <!-- logo badge -->
+  <div class="logo-badge">
+    <div class="emoji">🌸</div>
+    <div class="logo-name">EMMA.CREATIONZ</div>
+  </div>
+
+  <h1>Emma.<span>Creationz</span></h1>
+  <p class="tagline">Blooms &amp; Bouquets · Wrapping Feelings</p>
+  <p class="hero-desc">
+    Handcrafted with love 💕 — from dreamy candy bouquets & money flowers
+    to cozy crochet gifts & freshly baked treats. Every creation wraps
+    a feeling you can't find in any store.
+  </p>
+  <button class="cta-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+    ✨ Explore Our Creations ✨
+  </button>
+</section>
+
+<!-- STATS -->
+<div class="stats reveal">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Happy Customers</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Handmade</div>
+    </div>
+    <div>
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Gift Categories</div>
+    </div>
+    <div>
+      <div class="stat-num">2 mo</div>
+      <div class="stat-label">Of Pure Love</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <p class="section-title reveal">Our Dream Collections</p>
+  <p class="section-sub reveal">Wrapped with Heart, Made with Soul</p>
+  <div class="divider reveal" style="margin-bottom:50px;"></div>
+
+  <div class="products-grid">
+
+    <div class="product-card card-candy reveal">
+      <div class="card-img">🍬🍫🎊<span class="badge">Best Seller</span></div>
+      <div class="card-body">
+        <h3>Candy Bouquet</h3>
+        <p>Lays, Cadbury, Chili Mili & more — wrapped in dreamy paper with your name tag & a satin bow. Perfect as a surprise gift!</p>
+        <div class="price-row">
+          <span class="price">Starting PKR 350</span>
+          <button class="order-btn">Order 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-crochet reveal">
+      <div class="card-img">🧶🐱🎀<span class="badge">Handmade</span></div>
+      <div class="card-body">
+        <h3>Crochet Creations</h3>
+        <p>Adorable crochet items — Hello Kitty bags, bows, keychains & more. Each piece knitted by hand with soft, premium yarn.</p>
+        <div class="price-row">
+          <span class="price">Starting PKR 200</span>
+          <button class="order-btn">Order 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-money reveal">
+      <div class="card-img">💵🌹✨<span class="badge">Trending</span></div>
+      <div class="card-body">
+        <h3>Money Bouquet</h3>
+        <p>Turn currency notes into a gorgeous floral bouquet — the most unique gifting idea for birthdays, Eids & special occasions!</p>
+        <div class="price-row">
+          <span class="price">Customizable</span>
+          <button class="order-btn">Order 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-cake reveal">
+      <div class="card-img">🍩🧁🍰<span class="badge">Fresh Baked</span></div>
+      <div class="card-body">
+        <h3>Baked Treats</h3>
+        <p>Chocolate donuts with rainbow sprinkles & cupcakes topped with custom tags. Freshly made & beautifully presented.</p>
+        <div class="price-row">
+          <span class="price">Starting PKR 250</span>
+          <button class="order-btn">Order 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-bouquet reveal">
+      <div class="card-img">💐🎁🎀<span class="badge">Custom</span></div>
+      <div class="card-body">
+        <h3>Blooms &amp; Bouquets</h3>
+        <p>Fresh flower bouquets wrapped in premium tissue with ribbon, pearls & a personalized card. Say it with flowers.</p>
+        <div class="price-row">
+          <span class="price">Starting PKR 400</span>
+          <button class="order-btn">Order 🛒</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-custom reveal">
+      <div class="card-img">🎨💌🌟<span class="badge">✦ Special</span></div>
+      <div class="card-body">
+        <h3>Custom Gift Box</h3>
+        <p>Design your own dream gift box — mix & match from our full range. We'll package it beautifully with your personal message.</p>
+        <div class="price-row">
+          <span class="price">Fully Custom</span>
+          <button class="order-btn">Design 🎨</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <p class="section-title reveal">How It Works</p>
+  <p class="section-sub reveal" style="color:rgba(255,255,255,.7);">Simple · Sweet · Seamless</p>
+  <div class="divider reveal" style="margin-bottom:60px;"></div>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-icon">📲</div>
+      <h4>1. Place Order</h4>
+      <p>DM us on Instagram @emma.creationz with your request & details.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-icon">🎨</div>
+      <h4>2. We Create</h4>
+      <p>Our hands get to work crafting your personalized masterpiece with love.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-icon">🎀</div>
+      <h4>3. We Wrap</h4>
+      <p>Everything is beautifully wrapped with ribbon, bows & a personal tag.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-icon">🚀</div>
+      <h4>4. Delivered</h4>
+      <p>Your gift reaches your loved one fresh, safe & full of surprises!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / SHOWCASE -->
+<section class="showcase" id="about">
+  <div class="showcase-inner">
+    <div class="showcase-visual reveal">
+      <div class="sv-box sv-1">🍬🍫🎊<span>Candy Bouquets</span></div>
+      <div class="sv-box sv-2">🧶💕<span>Crochet</span></div>
+      <div class="sv-box sv-3">💵🌹<span>Money Bouquet</span></div>
+      <div class="sv-box sv-4">🍩🧁✨<span>Baked Goodies</span></div>
+    </div>
+    <div class="showcase-text reveal">
+      <h2>More Than Just Gifts — We Wrap Feelings 💕</h2>
+      <p>
+        Emma.Creationz was born two months ago from one girl's passion for making
+        people smile. Every bouquet, every crochet, every baked treat is crafted
+        personally — with intention, creativity, and heart.
+      </p>
+      <p>
+        We believe the best gifts are the ones made with your own hands — because
+        no store can replicate that feeling.
+      </p>
+      <ul class="highlight-list">
+        <li>100% handmade with premium materials</li>
+        <li>Custom name tags on every order</li>
+        <li>Same-day preparation available</li>
+        <li>Affordable pricing for every budget</li>
+        <li>Packaging that feels as good as the gift</li>
+        <li>Made with trust, love & wrapping feelings ✨</li>
+      </ul>
+      <button class="cta-btn" id="order">Order via Instagram 📲</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <p class="section-title reveal">What People Say 💬</p>
+  <p class="section-sub reveal">Real Love from Real Customers</p>
+  <div class="divider reveal" style="margin-bottom:50px;"></div>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The candy bouquet was STUNNING — my friend literally cried! The packaging was so beautiful and the personal name tag made it extra special. 100% ordering again!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">👧</div>
+        <div>
+          <div class="testi-name">Meerab A.</div>
+          <div class="testi-loc">Lahore, Pakistan</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">Ordered the money bouquet for my cousin's Eid. Everyone was asking where I got it! Emma puts so much effort into every detail. Love this store!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">🧕</div>
+        <div>
+          <div class="testi-name">Zimal K.</div>
+          <div class="testi-loc">Karachi, Pakistan</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">The crochet Hello Kitty bag is so adorable I don't even want to use it! Perfectly made, soft yarn, clean stitches. Emma is super talented mashallah!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">💁</div>
+        <div>
+          <div class="testi-name">Hira F.</div>
+          <div class="testi-loc">Islamabad, Pakistan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Emma.Creationz 🌸</div>
+  <div class="footer-tagline">Blooms & Bouquets · Wrapping Feelings</div>
+  <div class="social-row">
+    <a class="social-icon" href="https://www.instagram.com/emma.creationz" target="_blank">📸</a>
+    <a class="social-icon" href="#">💬</a>
+    <a class="social-icon" href="#">📧</a>
+  </div>
+  <div class="footer-links">
+    <a href="#products">Shop</a>
+    <a href="#process">How It Works</a>
+    <a href="#about">About Us</a>
+    <a href="https://www.instagram.com/emma.creationz" target="_blank">@emma.creationz</a>
+  </div>
+  <p class="footer-copy">© 2025 Emma.Creationz · Made with 💕 · All Creations Handmade</p>
+</footer>
+
+<script>
+  // scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
