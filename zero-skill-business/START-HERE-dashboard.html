@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zero-Skill to $50K/Month — Your Business Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0a0e1a;color:#e2e8f0;min-height:100vh}
+:root{--green:#00f5a0;--blue:#0066ff;--purple:#a855f7;--gold:#fbbf24;--red:#ef4444;--card:#131929;--border:#1e2d4a}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a0e1a 0%,#0d1b3e 50%,#0a0e1a 100%);padding:60px 24px;text-align:center;border-bottom:1px solid var(--border)}
+.hero-tag{display:inline-block;background:rgba(0,245,160,0.1);color:var(--green);border:1px solid rgba(0,245,160,0.3);padding:6px 18px;border-radius:50px;font-size:13px;font-weight:700;margin-bottom:20px}
+.hero h1{font-size:clamp(28px,5vw,52px);font-weight:900;line-height:1.1;margin-bottom:16px}
+.hero h1 span{color:var(--green)}
+.hero p{color:#94a3b8;font-size:17px;max-width:600px;margin:0 auto 32px}
+.hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.h-stat{padding:20px 32px;border-right:1px solid var(--border)}
+.h-stat:last-child{border:none}
+.h-stat strong{display:block;font-size:30px;font-weight:900;margin-bottom:4px}
+.h-stat span{font-size:13px;color:#64748b}
+
+/* TRUTH BOX */
+.truth-box{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:16px;padding:28px;margin:32px auto;max-width:800px;text-align:center}
+.truth-box h3{color:var(--gold);font-size:18px;margin-bottom:12px}
+.truth-box p{color:#94a3b8;font-size:15px;line-height:1.7}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:60px 0}
+.section-label{display:inline-block;background:rgba(0,245,160,0.1);color:var(--green);padding:5px 14px;border-radius:50px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+h2{font-size:clamp(24px,3vw,36px);font-weight:800;margin-bottom:8px}
+.subtitle{color:#64748b;font-size:15px;margin-bottom:40px}
+
+/* IDEA CARDS */
+.ideas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.idea-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
+.idea-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.idea-card.c1::before{background:linear-gradient(90deg,#00f5a0,#0066ff)}
+.idea-card.c2::before{background:linear-gradient(90deg,#a855f7,#ec4899)}
+.idea-card.c3::before{background:linear-gradient(90deg,#fbbf24,#ef4444)}
+.idea-card.c4::before{background:linear-gradient(90deg,#06b6d4,#0066ff)}
+.idea-card.c5::before{background:linear-gradient(90deg,#ef4444,#a855f7)}
+.idea-card:hover{transform:translateY(-4px);border-color:#2d3f5e;box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.card-rank{font-size:32px;margin-bottom:12px}
+.card-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.card-desc{color:#64748b;font-size:14px;margin-bottom:16px;line-height:1.6}
+.card-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.chip{padding:5px 12px;border-radius:50px;font-size:12px;font-weight:700}
+.chip-green{background:rgba(0,245,160,0.1);color:var(--green)}
+.chip-blue{background:rgba(0,102,255,0.1);color:#60a5fa}
+.chip-gold{background:rgba(251,191,36,0.1);color:var(--gold)}
+.difficulty{display:flex;gap:4px;align-items:center;margin-bottom:8px}
+.difficulty span{font-size:12px;color:#64748b;margin-right:4px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.filled{background:var(--green)}
+.dot.empty{background:#1e2d4a}
+.income-bar{height:6px;border-radius:3px;margin-top:12px;position:relative}
+.income-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#00f5a0,#0066ff)}
+.income-label{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:#64748b}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:40px}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--green),var(--blue),var(--purple))}
+.timeline-item{position:relative;margin-bottom:32px}
+.timeline-dot{position:absolute;left:-34px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid var(--border)}
+.td-green{background:rgba(0,245,160,0.15);border-color:var(--green);color:var(--green)}
+.td-blue{background:rgba(0,102,255,0.15);border-color:#60a5fa;color:#60a5fa}
+.td-purple{background:rgba(168,85,247,0.15);border-color:var(--purple);color:var(--purple)}
+.td-gold{background:rgba(251,191,36,0.15);border-color:var(--gold);color:var(--gold)}
+.tl-content{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.tl-period{font-size:12px;color:var(--green);font-weight:700;margin-bottom:6px}
+.tl-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.tl-tasks{list-style:none}
+.tl-tasks li{font-size:14px;color:#94a3b8;padding:4px 0;display:flex;align-items:flex-start;gap:8px}
+.tl-tasks li::before{content:'→';color:var(--green);font-weight:700;flex-shrink:0}
+.tl-income{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:50px;background:rgba(0,245,160,0.1);color:var(--green);font-size:13px;font-weight:700}
+
+/* COMPARISON TABLE */
+.compare-table{width:100%;border-collapse:collapse;margin-top:28px}
+.compare-table th{background:#0d1b3e;padding:14px 16px;text-align:left;font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.compare-table td{padding:14px 16px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+.compare-table tr:hover td{background:rgba(255,255,255,0.02)}
+.compare-table .best{color:var(--green);font-weight:700}
+.compare-table .stars{color:var(--gold)}
+
+/* DAILY PLAN */
+.daily-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:28px}
+.daily-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.daily-card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.daily-card .time{font-size:13px;color:var(--green);margin-bottom:16px}
+.task-list{list-style:none}
+.task-list li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;color:#94a3b8}
+.task-list li:last-child{border:none}
+.task-icon{font-size:16px;flex-shrink:0}
+
+/* ACTION STEPS */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:28px}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.step-num{width:40px;height:40px;border-radius:50%;background:rgba(0,245,160,0.1);border:2px solid var(--green);color:var(--green);font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.step-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.step-card p{font-size:13px;color:#64748b;line-height:1.5}
+
+/* SCAM ALERT */
+.scam-box{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:16px;padding:28px;margin:40px 0}
+.scam-box h3{color:var(--red);font-size:18px;margin-bottom:16px}
+.scam-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.scam-item,.legit-item{padding:16px;border-radius:10px}
+.scam-item{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2)}
+.legit-item{background:rgba(0,245,160,0.05);border:1px solid rgba(0,245,160,0.2)}
+.scam-item h4{color:var(--red);margin-bottom:8px;font-size:14px}
+.legit-item h4{color:var(--green);margin-bottom:8px;font-size:14px}
+.scam-item li,.legit-item li{font-size:13px;color:#94a3b8;padding:4px 0;list-style:none}
+
+/* TOOLS */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:28px}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center}
+.tool-icon{font-size:28px;margin-bottom:8px}
+.tool-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.tool-card p{font-size:12px;color:#64748b}
+.tool-badge{display:inline-block;padding:2px 8px;border-radius:50px;font-size:11px;font-weight:700;margin-top:6px}
+.tb-free{background:rgba(0,245,160,0.1);color:var(--green)}
+.tb-paid{background:rgba(251,191,36,0.1);color:var(--gold)}
+
+/* FOOTER */
+.footer{background:#080c18;border-top:1px solid var(--border);padding:40px 24px;text-align:center;color:#475569;font-size:14px}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .h-stat{padding:16px;border-right:none;border-bottom:1px solid var(--border)}
+  .scam-grid{grid-template-columns:1fr}
+  .timeline{padding-left:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🚀 Zero Skill Required — Real Business Models</div>
+  <h1>From <span>$0 to $50,000</span>/Month<br/>With 2 Hours a Day</h1>
+  <p>5 proven business models that require zero prior skills, work with your 2-hour schedule, and scale to life-changing income.</p>
+
+  <div class="truth-box">
+    <h3>⚠️ The Honest Truth — Read This First</h3>
+    <p>$50,000/month is achievable, but it takes <strong>2-3 years of consistent work</strong> — NOT 30 days. Anyone promising $50K/month instantly with zero effort is lying to you. This plan shows you the <strong>real, proven path</strong> that actual people follow. Months 1-3 you'll earn little. Months 6-12 you'll earn $2K-8K. Year 2-3 you hit the big numbers. <strong>Start today. Stay consistent. Win eventually.</strong></p>
+  </div>
+
+  <div class="hero-stats">
+    <div class="h-stat"><strong style="color:var(--green)">5</strong><span>Business Ideas</span></div>
+    <div class="h-stat"><strong style="color:var(--blue)">$0</strong><span>Startup Cost</span></div>
+    <div class="h-stat"><strong style="color:var(--gold)">2 hrs</strong><span>Per Day</span></div>
+    <div class="h-stat"><strong style="color:var(--purple)">2-3 yrs</strong><span>To $50K/month</span></div>
+  </div>
+</div>
+
+<!-- IDEAS -->
+<section>
+  <div class="container">
+    <div class="section-label">Your Options</div>
+    <h2>5 Zero-Skill Business Models</h2>
+    <p class="subtitle">Ranked by ease of starting. All can reach $50K/month.</p>
+
+    <div class="ideas-grid">
+
+      <div class="idea-card c1">
+        <div class="card-rank">🥇</div>
+        <div class="card-title">Social Media Agency</div>
+        <div class="card-desc">Manage social media for local businesses using AI tools. You get clients, AI creates content. Most beginner-friendly model.</div>
+        <div class="card-stats">
+          <span class="chip chip-green">Easiest Start</span>
+          <span class="chip chip-blue">Local + Global</span>
+          <span class="chip chip-gold">$300-1500/client</span>
+        </div>
+        <div class="difficulty"><span>Difficulty:</span><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div></div>
+        <div style="font-size:13px;color:#64748b">Time to first $: <strong style="color:var(--green)">2-4 weeks</strong></div>
+        <div class="income-bar"><div class="income-bar-fill" style="width:90%"></div></div>
+        <div class="income-label"><span>$0</span><span>$50K+/month</span></div>
+      </div>
+
+      <div class="idea-card c2">
+        <div class="card-rank">🥈</div>
+        <div class="card-title">AI Content Agency</div>
+        <div class="card-desc">Write blog posts, emails & social content for businesses using ChatGPT. Zero writing skill needed. 90%+ profit margin.</div>
+        <div class="card-stats">
+          <span class="chip chip-green">$0 Tool Cost</span>
+          <span class="chip chip-blue">Work From Home</span>
+          <span class="chip chip-gold">$300-2000/client</span>
+        </div>
+        <div class="difficulty"><span>Difficulty:</span><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div></div>
+        <div style="font-size:13px;color:#64748b">Time to first $: <strong style="color:var(--green)">1-2 weeks</strong></div>
+        <div class="income-bar"><div class="income-bar-fill" style="width:85%"></div></div>
+        <div class="income-label"><span>$0</span><span>$50K+/month</span></div>
+      </div>
+
+      <div class="idea-card c3">
+        <div class="card-rank">🥉</div>
+        <div class="card-title">Lead Generation Agency</div>
+        <div class="card-desc">Find customers for businesses using Facebook ads. Highest income potential per client. Businesses pay $1K-5K/month.</div>
+        <div class="card-stats">
+          <span class="chip chip-green">Highest Paid</span>
+          <span class="chip chip-blue">Recurring Revenue</span>
+          <span class="chip chip-gold">$500-5000/client</span>
+        </div>
+        <div class="difficulty"><span>Difficulty:</span><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div>
+        <div style="font-size:13px;color:#64748b">Time to first $: <strong style="color:var(--gold)">3-6 weeks</strong></div>
+        <div class="income-bar"><div class="income-bar-fill" style="width:95%"></div></div>
+        <div class="income-label"><span>$0</span><span>$50K+/month</span></div>
+      </div>
+
+      <div class="idea-card c4">
+        <div class="card-rank">4️⃣</div>
+        <div class="card-title">Print-on-Demand Store</div>
+        <div class="card-desc">Sell T-shirts/mugs designed by AI. No inventory, no shipping. Printful handles everything. Pure passive income at scale.</div>
+        <div class="card-stats">
+          <span class="chip chip-green">Passive Income</span>
+          <span class="chip chip-blue">Global Market</span>
+          <span class="chip chip-gold">$13+/sale profit</span>
+        </div>
+        <div class="difficulty"><span>Difficulty:</span><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div><div class="dot empty"></div></div>
+        <div style="font-size:13px;color:#64748b">Time to first $: <strong style="color:var(--gold)">4-8 weeks</strong></div>
+        <div class="income-bar"><div class="income-bar-fill" style="width:75%"></div></div>
+        <div class="income-label"><span>$0</span><span>$50K+/month</span></div>
+      </div>
+
+      <div class="idea-card c5">
+        <div class="card-rank">5️⃣</div>
+        <div class="card-title">Faceless YouTube Channel</div>
+        <div class="card-desc">Create educational videos without showing your face. AI writes scripts, AI voices reads them, free footage fills the screen.</div>
+        <div class="card-stats">
+          <span class="chip chip-green">Never On Camera</span>
+          <span class="chip chip-blue">Builds Asset</span>
+          <span class="chip chip-gold">Multiple Revenue Streams</span>
+        </div>
+        <div class="difficulty"><span>Difficulty:</span><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot empty"></div><div class="dot empty"></div></div>
+        <div style="font-size:13px;color:#64748b">Time to first $: <strong style="color:var(--red)">3-6 months</strong></div>
+        <div class="income-bar"><div class="income-bar-fill" style="width:88%"></div></div>
+        <div class="income-label"><span>$0</span><span>$80K+/month</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section style="background:#080c18;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">Quick Compare</div>
+    <h2>Which Business Is Right For You?</h2>
+    <div style="overflow-x:auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Skills Needed</th>
+            <th>First $ Timeline</th>
+            <th>$50K Timeline</th>
+            <th>Income Type</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>🥇 Social Media Agency</strong></td>
+            <td>None — AI helps</td>
+            <td class="best">2-4 weeks</td>
+            <td>2-3 years</td>
+            <td>Monthly retainer</td>
+            <td>People persons</td>
+          </tr>
+          <tr>
+            <td><strong>🥈 AI Content Agency</strong></td>
+            <td>None — ChatGPT</td>
+            <td class="best">1-2 weeks</td>
+            <td>2-3 years</td>
+            <td>Monthly retainer</td>
+            <td>Home workers</td>
+          </tr>
+          <tr>
+            <td><strong>🥉 Lead Generation</strong></td>
+            <td>Basic FB ads (2-3 weeks to learn)</td>
+            <td>3-6 weeks</td>
+            <td>18 months</td>
+            <td>Monthly retainer</td>
+            <td>Fastest to $50K</td>
+          </tr>
+          <tr>
+            <td><strong>4️⃣ Print-on-Demand</strong></td>
+            <td>None — AI designs</td>
+            <td>4-8 weeks</td>
+            <td>2-3 years</td>
+            <td>Passive/per sale</td>
+            <td>Creative thinkers</td>
+          </tr>
+          <tr>
+            <td><strong>5️⃣ Faceless YouTube</strong></td>
+            <td>None — AI does all</td>
+            <td>3-6 months</td>
+            <td>2-4 years</td>
+            <td>Ad revenue + sponsors</td>
+            <td>Long-term builders</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+  <div class="container">
+    <div class="section-label">Your Journey</div>
+    <h2>Month-by-Month Roadmap</h2>
+    <p class="subtitle">Following the Social Media Agency model (recommended for beginners)</p>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-green">1-4</div>
+        <div class="tl-content">
+          <div class="tl-period">WEEKS 1-4 — Foundation</div>
+          <div class="tl-title">Setup & Get First Free Client</div>
+          <ul class="tl-tasks">
+            <li>Create WhatsApp Business + Gmail for your agency</li>
+            <li>Learn Canva (1 hour on YouTube) + ChatGPT for captions</li>
+            <li>Create 5 sample posts (fake portfolio)</li>
+            <li>Walk into 10 local restaurants/salons — offer 1 FREE month</li>
+            <li>Land 1-2 free trial clients for testimonials</li>
+          </ul>
+          <span class="tl-income">Income: $0 — Gaining Experience</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-green">M2</div>
+        <div class="tl-content">
+          <div class="tl-period">MONTH 2 — First Real Money</div>
+          <div class="tl-title">Convert Trials + Get Paying Clients</div>
+          <ul class="tl-tasks">
+            <li>Convert 1-2 free trials to paying ($200-400/month)</li>
+            <li>Get 2 testimonials, post on social media</li>
+            <li>Send 15 outreach messages daily on WhatsApp/Facebook</li>
+            <li>Target: 3-4 paying clients total</li>
+          </ul>
+          <span class="tl-income">Income: $600 - $1,200/month</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-blue">M3</div>
+        <div class="tl-content">
+          <div class="tl-period">MONTH 3 — Building Systems</div>
+          <div class="tl-title">Raise Prices + Referral Machine</div>
+          <ul class="tl-tasks">
+            <li>Raise pricing to $400-600/month (you have proof now)</li>
+            <li>Launch a referral program ($50 per referred client)</li>
+            <li>Create a simple website (Carrd.co — $19/year)</li>
+            <li>Target: 8-10 clients</li>
+          </ul>
+          <span class="tl-income">Income: $2,000 - $4,000/month</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-blue">M6</div>
+        <div class="tl-content">
+          <div class="tl-period">MONTHS 4-6 — First Hire</div>
+          <div class="tl-title">Hire a VA + Focus on Sales Only</div>
+          <ul class="tl-tasks">
+            <li>Hire 1 virtual assistant on Fiverr ($150-200/month)</li>
+            <li>VA handles: content creation, scheduling, replies</li>
+            <li>You focus ONLY on: finding new clients + keeping current ones happy</li>
+            <li>Target: 20-25 clients</li>
+          </ul>
+          <span class="tl-income">Income: $8,000 - $12,000/month</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-purple">M12</div>
+        <div class="tl-content">
+          <div class="tl-period">MONTHS 7-12 — Scaling</div>
+          <div class="tl-title">Build Your Team + Premium Clients</div>
+          <ul class="tl-tasks">
+            <li>Hire 2nd VA or part-time social media manager</li>
+            <li>Add higher-value services (paid ads, strategy — outsource these)</li>
+            <li>Land 2-3 corporate/company clients ($1,500-3,000/month each)</li>
+            <li>Target: 40-50 clients</li>
+          </ul>
+          <span class="tl-income">Income: $18,000 - $25,000/month</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot td-gold">Y2</div>
+        <div class="tl-content">
+          <div class="tl-period">YEAR 2 — Agency</div>
+          <div class="tl-title">Full Agency Mode</div>
+          <ul class="tl-tasks">
+            <li>Team of 3-5 people (all hired cheaply via Fiverr/LinkedIn)</li>
+            <li>You work 2 hours/day on strategy and high-level decisions</li>
+            <li>Automate client onboarding, reporting, invoicing</li>
+            <li>Target: 80-100+ clients</li>
+          </ul>
+          <span class="tl-income" style="color:var(--gold)">Income: $35,000 - $50,000+/month ✅</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DAILY PLAN -->
+<section style="background:#080c18;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">Daily Routine</div>
+    <h2>Your Perfect 2-Hour Day</h2>
+    <p class="subtitle">What to do every single day to build your $50K business</p>
+
+    <div class="daily-grid">
+      <div class="daily-card">
+        <h3>Hour 1 — Client Work</h3>
+        <div class="time">⏰ 9:00 AM - 10:00 AM</div>
+        <ul class="task-list">
+          <li><span class="task-icon">🤖</span>Use ChatGPT to write 5-10 social captions (10 min)</li>
+          <li><span class="task-icon">🎨</span>Design 3-5 posts in Canva (20 min)</li>
+          <li><span class="task-icon">📅</span>Schedule posts for all clients in Buffer (15 min)</li>
+          <li><span class="task-icon">💬</span>Reply to client comments & DMs (15 min)</li>
+        </ul>
+      </div>
+      <div class="daily-card">
+        <h3>Hour 2 — Growth Work</h3>
+        <div class="time">⏰ 10:00 AM - 11:00 AM</div>
+        <ul class="task-list">
+          <li><span class="task-icon">📨</span>Send 10-15 outreach messages to potential clients (30 min)</li>
+          <li><span class="task-icon">🔄</span>Follow up with 5 previous leads (10 min)</li>
+          <li><span class="task-icon">📊</span>Check analytics & send 1 client report (10 min)</li>
+          <li><span class="task-icon">📚</span>Learn 1 new thing (YouTube tutorial) (10 min)</li>
+        </ul>
+      </div>
+      <div class="daily-card">
+        <h3>Weekend (30 min)</h3>
+        <div class="time">⏰ Saturday Only</div>
+        <ul class="task-list">
+          <li><span class="task-icon">📋</span>Plan all content for next week in advance</li>
+          <li><span class="task-icon">📞</span>Check in with each client (quick WhatsApp)</li>
+          <li><span class="task-icon">💰</span>Review income tracker — did you hit targets?</li>
+          <li><span class="task-icon">🎯</span>Set specific goal for coming week</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIRST WEEK ACTIONS -->
+<section>
+  <div class="container">
+    <div class="section-label">Start NOW</div>
+    <h2>Your First 7 Days — Exact Steps</h2>
+    <p class="subtitle">Do exactly this. In this order. No exceptions.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>Day 1 — Pick Your Business</h4>
+        <p>Choose ONE idea from the 5 above. Beginners: pick Social Media Agency or AI Content Agency.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>Day 2 — Create Accounts</h4>
+        <p>Gmail + WhatsApp Business + Canva + ChatGPT. All free. All takes 30 minutes total.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>Day 3 — Make a Portfolio</h4>
+        <p>Create 5 sample posts/content pieces for a FAKE business. This is your proof of skill.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>Day 4 — Write Your Pitch</h4>
+        <p>Write a 3-sentence pitch about what you offer, who you help, and what they get. Keep it simple.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <h4>Day 5 — First Outreach</h4>
+        <p>Contact 20 people/businesses. WhatsApp, Facebook, in-person. Offer 1 FREE month trial.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">6</div>
+        <h4>Day 6-7 — Follow Up</h4>
+        <p>Follow up with everyone. Expect 90% to say no. You only need 1 YES to start. Keep going.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TOOLS -->
+<section style="background:#080c18;border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">Your Arsenal</div>
+    <h2>Free Tools to Run Your Business</h2>
+    <p class="subtitle">Everything you need costs $0 to start</p>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🤖</div><h4>ChatGPT</h4><p>Write all content, captions, emails, scripts</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">🎨</div><h4>Canva</h4><p>Design graphics, posts, presentations, logos</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">📅</div><h4>Buffer</h4><p>Schedule posts for 3 social accounts</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">📹</div><h4>Invideo.io</h4><p>AI creates videos from text automatically</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">🎤</div><h4>ElevenLabs</h4><p>Realistic AI voiceovers for YouTube</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">📸</div><h4>Pexels</h4><p>Free professional stock photos & videos</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">📊</div><h4>Google Docs</h4><p>Deliver content, contracts, reports</p><span class="tool-badge tb-free">FREE</span></div>
+      <div class="tool-card"><div class="tool-icon">💳</div><h4>Payoneer</h4><p>Receive international payments to Pakistan</p><span class="tool-badge tb-free">FREE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCAM ALERT -->
+<section>
+  <div class="container">
+    <div class="scam-box">
+      <h3>🚨 SCAM ALERT — Protect Yourself</h3>
+      <div class="scam-grid">
+        <div class="scam-item">
+          <h4>❌ SCAMS (Avoid These)</h4>
+          <li>"Make $10,000 in your first week!"</li>
+          <li>"Pay $500 to join our system"</li>
+          <li>"Click ads to earn money"</li>
+          <li>"Data entry jobs that pay $5/entry"</li>
+          <li>"Crypto trading guaranteed profits"</li>
+          <li>"MLM / Network Marketing"</li>
+          <li>"Survey sites that pay well"</li>
+          <li>Any job asking for upfront payment</li>
+        </div>
+        <div class="legit-item">
+          <h4>✅ LEGITIMATE (Safe Business Models)</h4>
+          <li>Service businesses (agency, freelance)</li>
+          <li>Selling on Fiverr/Upwork</li>
+          <li>E-commerce with real products</li>
+          <li>Content creation on YouTube</li>
+          <li>Affiliate marketing (slow but real)</li>
+          <li>Print-on-demand (Printful/Printify)</li>
+          <li>Selling digital products (courses, templates)</li>
+          <li>Local service businesses</li>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>🚀 Built for Your Zero-Skill to $50K Business Journey</p>
+  <p style="margin-top:8px;color:#334155">Remember: Every millionaire started at $0. The difference is they started and never quit.</p>
+</div>
+
+</body>
+</html>
