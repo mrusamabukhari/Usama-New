@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Faceless YouTube — $10K Fast Track Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#060a14;color:#e2e8f0;min-height:100vh;line-height:1.6}
+:root{
+  --red:#ff4757;--green:#00f5a0;--blue:#4fc3f7;
+  --gold:#ffd700;--purple:#b388ff;--orange:#ff9f43;
+  --card:#0d1526;--card2:#111827;--border:#1a2740;
+}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(160deg,#060a14 0%,#0d1526 40%,#0a0f1e 100%);
+  padding:70px 24px 50px;text-align:center;
+  border-bottom:1px solid var(--border);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'▶';position:absolute;font-size:400px;opacity:0.02;
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;
+}
+.pill{display:inline-block;background:rgba(255,71,87,0.12);color:var(--red);
+  border:1px solid rgba(255,71,87,0.3);padding:7px 20px;border-radius:50px;
+  font-size:13px;font-weight:700;margin-bottom:22px;letter-spacing:.5px}
+.hero h1{font-size:clamp(30px,6vw,58px);font-weight:900;line-height:1.1;margin-bottom:16px}
+.hero h1 em{color:var(--red);font-style:normal}
+.hero h1 span{color:var(--green)}
+.hero-sub{color:#64748b;font-size:17px;max-width:640px;margin:0 auto 36px;line-height:1.7}
+
+/* truth banner */
+.truth{background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.25);
+  border-radius:14px;padding:22px 28px;max-width:820px;margin:0 auto 40px;text-align:left}
+.truth h3{color:var(--gold);font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.truth p{color:#94a3b8;font-size:14px;line-height:1.8}
+.truth strong{color:#e2e8f0}
+
+.hero-bars{display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin-top:36px;border-top:1px solid var(--border);padding-top:36px}
+.hbar{padding:16px 32px;border-right:1px solid var(--border);text-align:center}
+.hbar:last-child{border:none}
+.hbar big{display:block;font-size:28px;font-weight:900;line-height:1}
+.hbar small{font-size:12px;color:#475569;margin-top:4px;display:block}
+
+/* ── SECTION ── */
+.section{padding:64px 24px}
+.wrap{max-width:1200px;margin:0 auto}
+.lbl{display:inline-block;padding:5px 14px;border-radius:50px;font-size:12px;
+  font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.lbl-red{background:rgba(255,71,87,.12);color:var(--red)}
+.lbl-green{background:rgba(0,245,160,.1);color:var(--green)}
+.lbl-blue{background:rgba(79,195,247,.1);color:var(--blue)}
+.lbl-gold{background:rgba(255,215,0,.1);color:var(--gold)}
+.lbl-purple{background:rgba(179,136,255,.1);color:var(--purple)}
+h2{font-size:clamp(22px,3.5vw,36px);font-weight:900;margin-bottom:8px}
+.sub{color:#64748b;font-size:15px;margin-bottom:40px;max-width:640px}
+
+/* ── CHANNEL CARDS ── */
+.channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.ch-card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:28px;position:relative;overflow:hidden;transition:all .3s}
+.ch-card:hover{transform:translateY(-5px);border-color:#2d3f5e;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+.ch-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:18px 18px 0 0}
+.g1::after{background:linear-gradient(90deg,#ff4757,#ff6b81)}
+.g2::after{background:linear-gradient(90deg,#00f5a0,#00c9ff)}
+.g3::after{background:linear-gradient(90deg,#ffd700,#ff9f43)}
+.g4::after{background:linear-gradient(90deg,#b388ff,#ea80fc)}
+.g5::after{background:linear-gradient(90deg,#4fc3f7,#1565c0)}
+.g6::after{background:linear-gradient(90deg,#ff9f43,#ff6b81)}
+.g7::after{background:linear-gradient(90deg,#00c9ff,#92fe9d)}
+.g8::after{background:linear-gradient(90deg,#f7971e,#ffd200)}
+
+.ch-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.ch-rank{font-size:28px}
+.ch-badge{padding:4px 10px;border-radius:50px;font-size:11px;font-weight:800}
+.badge-fire{background:rgba(255,71,87,.15);color:var(--red)}
+.badge-money{background:rgba(0,245,160,.12);color:var(--green)}
+.badge-fast{background:rgba(255,215,0,.12);color:var(--gold)}
+.ch-title{font-size:19px;font-weight:800;margin-bottom:6px}
+.ch-sub{color:#64748b;font-size:13px;line-height:1.6;margin-bottom:16px}
+.ch-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.meta-chip{padding:4px 11px;border-radius:50px;font-size:12px;font-weight:600;background:#111827;border:1px solid var(--border)}
+.mc-red{color:var(--red);border-color:rgba(255,71,87,.3)}
+.mc-green{color:var(--green);border-color:rgba(0,245,160,.3)}
+.mc-gold{color:var(--gold);border-color:rgba(255,215,0,.3)}
+.mc-blue{color:var(--blue);border-color:rgba(79,195,247,.3)}
+.mc-purple{color:var(--purple);border-color:rgba(179,136,255,.3)}
+
+.ch-earn{background:#111827;border-radius:10px;padding:14px;margin-bottom:14px}
+.ch-earn-title{font-size:11px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.earn-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+.earn-row span:first-child{color:#94a3b8}
+.earn-row span:last-child{font-weight:700;color:var(--green)}
+
+.ch-example{background:rgba(0,245,160,.04);border:1px solid rgba(0,245,160,.12);
+  border-radius:8px;padding:12px;font-size:13px;color:#94a3b8}
+.ch-example strong{color:var(--green);display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── REAL STORY ── */
+.story-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.story-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.story-icon{font-size:36px;margin-bottom:14px}
+.story-card h3{font-size:16px;font-weight:800;margin-bottom:8px}
+.story-card p{font-size:14px;color:#64748b;line-height:1.7}
+.story-card .result{margin-top:14px;padding:10px 14px;background:#111827;border-radius:8px;font-size:13px}
+.story-card .result span{color:var(--green);font-weight:700}
+
+/* ── 3 PATHS ── */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.path-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:28px}
+.path-card.highlight{border-color:var(--green);background:rgba(0,245,160,.04)}
+.path-num{font-size:40px;font-weight:900;margin-bottom:12px;line-height:1}
+.path-card h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.path-card p{color:#64748b;font-size:14px;margin-bottom:16px;line-height:1.7}
+.path-steps{list-style:none}
+.path-steps li{font-size:13px;color:#94a3b8;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start}
+.path-steps li:last-child{border:none}
+.path-steps li::before{content:'→';color:var(--green);font-weight:700;flex-shrink:0}
+.path-income{margin-top:14px;padding:10px 16px;border-radius:50px;font-size:13px;font-weight:700;text-align:center}
+.pi-green{background:rgba(0,245,160,.1);color:var(--green)}
+.pi-gold{background:rgba(255,215,0,.1);color:var(--gold)}
+.pi-blue{background:rgba(79,195,247,.1);color:var(--blue)}
+
+/* ── 60-DAY PLAN ── */
+.week-grid{display:grid;gap:16px}
+.week{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.week-header{padding:16px 22px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.week-label{padding:5px 14px;border-radius:50px;font-size:13px;font-weight:700;flex-shrink:0}
+.wl-red{background:rgba(255,71,87,.15);color:var(--red)}
+.wl-green{background:rgba(0,245,160,.12);color:var(--green)}
+.wl-gold{background:rgba(255,215,0,.1);color:var(--gold)}
+.wl-purple{background:rgba(179,136,255,.12);color:var(--purple)}
+.week-title{font-size:15px;font-weight:700}
+.week-income{margin-left:auto;font-size:13px;font-weight:700;color:var(--green)}
+.week-body{padding:0 22px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.day-block{background:#111827;border-radius:10px;padding:14px}
+.day-block h4{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--blue)}
+.day-block ul{list-style:none}
+.day-block li{font-size:13px;color:#94a3b8;padding:3px 0;display:flex;gap:6px}
+.day-block li::before{content:'•';color:var(--green);flex-shrink:0}
+
+/* ── TOOLS ── */
+.tools-table{width:100%;border-collapse:collapse;margin-top:24px}
+.tools-table th{background:#0d1526;padding:12px 16px;text-align:left;font-size:12px;
+  font-weight:700;color:#475569;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.tools-table td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;vertical-align:middle}
+.tools-table tr:hover td{background:rgba(255,255,255,.02)}
+.t-free{color:var(--green);font-weight:700;font-size:12px}
+.t-paid{color:var(--gold);font-weight:700;font-size:12px}
+
+/* ── SCRIPT TEMPLATES ── */
+.script-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px}
+.script-box h4{color:var(--blue);font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.script-content{font-size:13px;color:#94a3b8;line-height:1.9;font-family:'Courier New',monospace;
+  background:#080c14;border-radius:8px;padding:16px;white-space:pre-wrap}
+.script-note{margin-top:10px;font-size:12px;color:#475569;font-style:italic}
+
+/* ── AFFILIATE TABLES ── */
+.aff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.aff-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.aff-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.aff-card .niche-tag{font-size:12px;color:var(--blue);margin-bottom:12px}
+.aff-item{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.aff-item:last-child{border:none}
+.aff-item span:first-child{color:#94a3b8}
+.aff-item span:last-child{color:var(--green);font-weight:700}
+
+/* ── VIRAL HOOKS ── */
+.hooks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.hook-card{background:var(--card);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;color:#94a3b8;line-height:1.6}
+.hook-card strong{color:#e2e8f0;display:block;margin-bottom:4px;font-size:13px}
+
+/* ── FOOTER ── */
+footer{background:#050810;border-top:1px solid var(--border);padding:36px 24px;text-align:center;color:#334155;font-size:14px}
+
+@media(max-width:700px){
+  .hbar{padding:14px 16px;border-right:none;border-bottom:1px solid var(--border)}
+  .hbar:last-child{border:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="pill">📹 FACELESS YOUTUBE MASTERCLASS 2025</div>
+  <h1>Build a Faceless Channel<br/>That Earns <em>$10K</em>/<span>Month</span></h1>
+  <p class="hero-sub">Real channel ideas, real earning strategies, real timelines. No face needed. No expensive equipment. Just 2 hours a day and the right niche.</p>
+
+  <div class="truth">
+    <h3>⚠️ The Truth About "$10K in First Month"</h3>
+    <p>
+      Making $10K from <strong>YouTube AdSense alone</strong> in month 1 is nearly impossible (you need 1,000 subscribers + 4,000 watch hours just to qualify). BUT making $10K total in month 1-3 IS real — through <strong>affiliate marketing</strong> (earning commissions from products you mention). Several channels earning $10K/month in month 3-4 are documented. The fastest path is: <strong>AI Tools niche + affiliate links = $10K possible by month 2-3</strong>.
+    </p>
+  </div>
+
+  <div class="hero-bars">
+    <div class="hbar"><big style="color:var(--red)">8</big><small>Fastest Niches</small></div>
+    <div class="hbar"><big style="color:var(--green)">$10K</big><small>Possible by Month 3</small></div>
+    <div class="hbar"><big style="color:var(--gold)">0</big><small>Skills Needed</small></div>
+    <div class="hbar"><big style="color:var(--blue)">2 hrs</big><small>Per Day</small></div>
+    <div class="hbar"><big style="color:var(--purple)">$0</big><small>Start-up Cost</small></div>
+  </div>
+</div>
+
+<!-- ═══ 3 WAYS TO MAKE MONEY ═══ -->
+<div class="section" style="background:#080c14;border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="lbl lbl-gold">💰 Money Strategy</div>
+    <h2>3 Ways Faceless Channels Make $10K Fast</h2>
+    <p class="sub">AdSense is the SLOWEST. Smart creators use all 3 together.</p>
+
+    <div class="paths">
+      <div class="path-card">
+        <div class="path-num" style="color:#475569">01</div>
+        <h3>YouTube AdSense</h3>
+        <p>YouTube pays you per 1,000 views. Finance/AI niches pay $10-30 per 1,000 views — the highest RPM available.</p>
+        <ul class="path-steps">
+          <li>Requires: 1,000 subs + 4,000 watch hours first</li>
+          <li>Typical wait: 3-6 months to qualify</li>
+          <li>$10K/month needs ~500K+ views at $20 RPM</li>
+          <li>Slowest path but most passive once built</li>
+        </ul>
+        <div class="path-income pi-blue">Timeline to $10K: 6-18 months</div>
+      </div>
+
+      <div class="path-card highlight">
+        <div class="path-num" style="color:var(--green)">02</div>
+        <h3>🔥 Affiliate Marketing <span style="font-size:13px;color:var(--green)">(FASTEST)</span></h3>
+        <p>Put affiliate links in your video descriptions. When viewers buy the product, YOU earn a commission. No subscribers needed!</p>
+        <ul class="path-steps">
+          <li>Works from Video #1 — zero wait time</li>
+          <li>AI tools pay $50-200 per referral</li>
+          <li>Finance apps pay $50-500 per signup</li>
+          <li>10,000 views × 1% click × $100 commission = $10K</li>
+          <li>One viral video can earn $10K+ in days</li>
+        </ul>
+        <div class="path-income pi-green">Timeline to $10K: 1-3 months ✅</div>
+      </div>
+
+      <div class="path-card">
+        <div class="path-num" style="color:var(--gold)">03</div>
+        <h3>Sponsorships</h3>
+        <p>Companies pay you to mention their product in your video. Even small channels (10K subscribers) earn $200-1,000 per video.</p>
+        <ul class="path-steps">
+          <li>Requires at least 5,000-10,000 subscribers</li>
+          <li>Finance niche: $500-5,000 per sponsored video</li>
+          <li>AI/tech tools companies actively seek creators</li>
+          <li>Reach out proactively — don't wait</li>
+        </ul>
+        <div class="path-income pi-gold">Timeline to $10K: 4-8 months</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHANNEL IDEAS ═══ -->
+<div class="section">
+  <div class="wrap">
+    <div class="lbl lbl-red">🎯 Channel Ideas</div>
+    <h2>8 Fastest-Growing Faceless Channel Niches</h2>
+    <p class="sub">Ranked by speed to $10K. Real earnings. Real strategies. No fluff.</p>
+
+    <div class="channels">
+
+      <!-- 1 -->
+      <div class="ch-card g1">
+        <div class="ch-top">
+          <span class="ch-rank">🔥</span>
+          <span class="ch-badge badge-fire">#1 FASTEST TO $10K</span>
+        </div>
+        <div class="ch-title">AI Tools Tutorial Channel</div>
+        <div class="ch-sub">Teach people how to use ChatGPT, Midjourney, Claude, Sora, ElevenLabs and other AI tools. Hundreds of millions of people are desperately searching "how to use AI" right now.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-red">Explosive Demand</span>
+          <span class="meta-chip mc-green">High Affiliate $$$</span>
+          <span class="meta-chip mc-blue">Low Competition Still</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$8-18/1K views</span></div>
+          <div class="earn-row"><span>Jasper AI affiliate</span><span>$50-100/signup</span></div>
+          <div class="earn-row"><span>MidJourney affiliate</span><span>$20-40/signup</span></div>
+          <div class="earn-row"><span>Skillshare/Coursera</span><span>$7-50/signup</span></div>
+          <div class="earn-row"><span>Sponsorship (at 10K subs)</span><span>$500-2,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          Channels like "AI Advantage" and "Matt Wolfe" grew from 0 to 100K+ subscribers in under 3 months in 2023-2024. Their affiliate earnings from AI tools exceeded $30K/month before AdSense even activated.
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="ch-card g2">
+        <div class="ch-top">
+          <span class="ch-rank">💰</span>
+          <span class="ch-badge badge-money">#2 HIGHEST PAYING</span>
+        </div>
+        <div class="ch-title">Personal Finance & Investing</div>
+        <div class="ch-sub">Explain budgeting, investing, stock market, passive income, and saving money. Highest AdSense RPM on all of YouTube. Finance is forever.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-gold">$15-35 RPM</span>
+          <span class="meta-chip mc-green">Huge Audience</span>
+          <span class="meta-chip mc-purple">Evergreen Content</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$15-35/1K views</span></div>
+          <div class="earn-row"><span>Credit card affiliate</span><span>$50-200/approval</span></div>
+          <div class="earn-row"><span>Robinhood/Webull</span><span>$5-20/signup</span></div>
+          <div class="earn-row"><span>Online broker affiliate</span><span>$50-500/account</span></div>
+          <div class="earn-row"><span>Course sales</span><span>$97-497/sale</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Andrei Jikh" and "Graham Stephan" both started faceless/low-budget. Channels teaching "How I invest $X" get 1M+ views routinely. A beginner in this niche can hit $5K/month purely from affiliate commissions within 90 days if videos go viral.
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="ch-card g3">
+        <div class="ch-top">
+          <span class="ch-rank">⚡</span>
+          <span class="ch-badge badge-fast">#3 VIRAL POTENTIAL</span>
+        </div>
+        <div class="ch-title">Business Stories & Case Studies</div>
+        <div class="ch-sub">"How Elon Musk Built Tesla", "How McDonald's Makes Billions", "How This Guy Made $10M Selling Water Bottles." Storytelling format. Huge viewership. No face. Just narration over visuals.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-red">10M+ View Videos</span>
+          <span class="meta-chip mc-gold">Sponsorship Magnet</span>
+          <span class="meta-chip mc-blue">Easy to Make</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$5-12/1K views</span></div>
+          <div class="earn-row"><span>Business tool affiliates</span><span>$30-100/signup</span></div>
+          <div class="earn-row"><span>Course platform affiliates</span><span>$50-200/sale</span></div>
+          <div class="earn-row"><span>Sponsorships (early)</span><span>$1,000-5,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Magnates Media" — completely faceless, documentary-style business stories. Built to 500K+ subscribers. Videos regularly get 3-5 million views. One viral video = $15,000-50,000 in a single week from ads + sponsors.
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="ch-card g4">
+        <div class="ch-top">
+          <span class="ch-rank">🇵🇰</span>
+          <span class="ch-badge badge-fire">PAKISTAN GOLD</span>
+        </div>
+        <div class="ch-title">Earn Online in Pakistan (Urdu)</div>
+        <div class="ch-sub">Teach Pakistanis how to earn dollars online — Fiverr, Upwork, freelancing, YouTube, Shopify in URDU. Massive underserved audience of 220M+ people. Almost zero quality competition.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-green">220M Audience</span>
+          <span class="meta-chip mc-red">Zero Competition</span>
+          <span class="meta-chip mc-gold">High Local Trust</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM (Urdu)</span><span>$1-3/1K views</span></div>
+          <div class="earn-row"><span>Online course sales (PKR)</span><span>PKR 3,000-15,000/sale</span></div>
+          <div class="earn-row"><span>Paid mentorship/consulting</span><span>PKR 5,000-30,000/student</span></div>
+          <div class="earn-row"><span>Affiliate (Fiverr, etc.)</span><span>$15-50/referral</span></div>
+          <div class="earn-row"><span>Sponsorships (local brands)</span><span>PKR 50,000-200,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          Pakistani channels like "Irfan's View" and "Shehzad Ghafoor" built 500K-1M+ audiences teaching online earning in Urdu. These creators earn $10K-50K/month through courses and local sponsorships. The niche is still massively underserved.
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="ch-card g5">
+        <div class="ch-top">
+          <span class="ch-rank">🧠</span>
+          <span class="ch-badge badge-money">EASY TO MAKE</span>
+        </div>
+        <div class="ch-title">Stoicism & Self-Improvement</div>
+        <div class="ch-sub">Quotes from Marcus Aurelius, stoic philosophy, discipline, mindset. Text on black screen + AI voice + calm music. Simplest video format possible. Gets millions of views every month globally.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-purple">5 Min to Make</span>
+          <span class="meta-chip mc-green">Viral on Shorts</span>
+          <span class="meta-chip mc-blue">Timeless Content</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$3-8/1K views</span></div>
+          <div class="earn-row"><span>Book affiliate (Amazon)</span><span>$2-10/sale</span></div>
+          <div class="earn-row"><span>Meditation app affiliate</span><span>$5-30/signup</span></div>
+          <div class="earn-row"><span>Sell wallpaper packs</span><span>$5-15/pack</span></div>
+          <div class="earn-row"><span>Sponsorships (wellness brands)</span><span>$500-3,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Einzelgänger" — completely faceless philosophy channel. 1M+ subscribers. "Daily Stoic" channel earns $500K+/year. Simple text + images + quotes. A new channel in this niche can hit 100K subscribers in 4-6 months with consistent daily Shorts.
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="ch-card g6">
+        <div class="ch-top">
+          <span class="ch-rank">🕵️</span>
+          <span class="ch-badge badge-fast">VIRAL NICHE</span>
+        </div>
+        <div class="ch-title">True Crime & Mysteries</div>
+        <div class="ch-sub">Cover real crime cases, unsolved mysteries, disappearances. Dramatic AI voiceover + crime scene photos + suspenseful music. People cannot stop watching. Highest viewer retention on YouTube.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-red">Highest Retention</span>
+          <span class="meta-chip mc-gold">Binge-worthy</span>
+          <span class="meta-chip mc-green">Massive Audience</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$4-10/1K views</span></div>
+          <div class="earn-row"><span>VPN affiliate (Nord/ExpressVPN)</span><span>$50-100/signup</span></div>
+          <div class="earn-row"><span>Patreon supporters</span><span>$3-20/month/fan</span></div>
+          <div class="earn-row"><span>Merchandise (true crime merch)</span><span>$8-25/item profit</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Cayleigh Elise" (faceless-style) and countless anonymous true crime channels earn $5,000-$40,000/month. One channel "Mystery Recapped" built 3M+ subscribers entirely faceless, earning $20K+/month.
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="ch-card g7">
+        <div class="ch-top">
+          <span class="ch-rank">🌍</span>
+          <span class="ch-badge badge-money">EVERGREEN</span>
+        </div>
+        <div class="ch-title">Geography & World Facts</div>
+        <div class="ch-sub">"Why Is This Country So Poor?", "Countries That Don't Exist Anymore", "The World's Most Dangerous Country." Map animations + AI narration. Children + adults both watch. School projects drive millions of views.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-blue">School Traffic</span>
+          <span class="meta-chip mc-green">Family Safe</span>
+          <span class="meta-chip mc-gold">Endless Topics</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$3-7/1K views</span></div>
+          <div class="earn-row"><span>Educational affiliate programs</span><span>$10-50/sale</span></div>
+          <div class="earn-row"><span>Sponsorships (travel, VPN)</span><span>$500-2,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Geography Now" built 3.5M subscribers completely faceless with maps/graphics. "Real Life Lore" earns $15-25K/month. New channels in this niche regularly hit 100K subs in 6-9 months.
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="ch-card g8">
+        <div class="ch-top">
+          <span class="ch-rank">💎</span>
+          <span class="ch-badge badge-fast">LUXURY NICHE</span>
+        </div>
+        <div class="ch-title">Luxury Lifestyle & Wealth</div>
+        <div class="ch-sub">"Inside Elon Musk's $100M Yacht", "Jeff Bezos' Daily Routine", "The Most Expensive Things in the World." No face. Just stock footage + voiceover. People are OBSESSED with how the ultra-rich live.</div>
+        <div class="ch-meta">
+          <span class="meta-chip mc-gold">Aspirational Content</span>
+          <span class="meta-chip mc-red">Very Viral</span>
+          <span class="meta-chip mc-green">Watch Time = High</span>
+        </div>
+        <div class="ch-earn">
+          <div class="ch-earn-title">💰 How This Channel Makes Money</div>
+          <div class="earn-row"><span>AdSense RPM</span><span>$5-12/1K views</span></div>
+          <div class="earn-row"><span>Luxury brand affiliates</span><span>$20-200/sale</span></div>
+          <div class="earn-row"><span>Finance/investing affiliates</span><span>$50-300/signup</span></div>
+          <div class="earn-row"><span>Sponsorships</span><span>$1,000-8,000/video</span></div>
+        </div>
+        <div class="ch-example">
+          <strong>📺 Real Example</strong>
+          "Luxury Zone", "Top Luxury", and "The Richest" channels are all faceless compilations earning $10K-80K/month. Several grew from 0 to 500K subscribers in under 6 months. One viral video on Elon Musk or Jeff Bezos = 5-10 million views.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFFILIATE MONEY ═══ -->
+<div class="section" style="background:#080c14;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="lbl lbl-green">💸 Affiliate Programs</div>
+    <h2>Best Affiliate Programs By Niche</h2>
+    <p class="sub">These pay the most per click. Put these links in EVERY video description.</p>
+
+    <div class="aff-grid">
+      <div class="aff-card">
+        <h4>🤖 AI Tools Niche</h4>
+        <div class="niche-tag">Highest commission per signup</div>
+        <div class="aff-item"><span>Jasper AI</span><span>$50-100/signup</span></div>
+        <div class="aff-item"><span>ElevenLabs</span><span>$20-50/signup</span></div>
+        <div class="aff-item"><span>Writesonic</span><span>$30-60/signup</span></div>
+        <div class="aff-item"><span>Copy.ai</span><span>$20-40/signup</span></div>
+        <div class="aff-item"><span>Synthesia</span><span>$50-100/signup</span></div>
+      </div>
+
+      <div class="aff-card">
+        <h4>💰 Finance Niche</h4>
+        <div class="niche-tag">Highest total earnings potential</div>
+        <div class="aff-item"><span>Coinbase (crypto)</span><span>$10-50/signup</span></div>
+        <div class="aff-item"><span>Binance affiliate</span><span>Up to 50% commissions</span></div>
+        <div class="aff-item"><span>Acorns/Stash</span><span>$5-20/account</span></div>
+        <div class="aff-item"><span>NordVPN/ExpressVPN</span><span>$30-100/sale</span></div>
+        <div class="aff-item"><span>Fiverr affiliate</span><span>$15-150/referral</span></div>
+      </div>
+
+      <div class="aff-card">
+        <h4>📚 Education Niche</h4>
+        <div class="niche-tag">Good conversion rates</div>
+        <div class="aff-item"><span>Skillshare</span><span>$7-67/signup</span></div>
+        <div class="aff-item"><span>Coursera</span><span>$10-45/enrollment</span></div>
+        <div class="aff-item"><span>Udemy</span><span>15% per course sale</span></div>
+        <div class="aff-item"><span>Amazon Books</span><span>4-8% per sale</span></div>
+        <div class="aff-item"><span>Grammarly</span><span>$20-25/premium</span></div>
+      </div>
+
+      <div class="aff-card">
+        <h4>🛒 Universal (Any Niche)</h4>
+        <div class="niche-tag">Works for every channel type</div>
+        <div class="aff-item"><span>Amazon Associates</span><span>1-10% per sale</span></div>
+        <div class="aff-item"><span>Hostinger hosting</span><span>$50-100/sale</span></div>
+        <div class="aff-item"><span>Canva affiliate</span><span>$36/pro signup</span></div>
+        <div class="aff-item"><span>NordVPN</span><span>$30-100/sale</span></div>
+        <div class="aff-item"><span>Envato Elements</span><span>$20-120/sale</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 60-DAY PLAN ═══ -->
+<div class="section">
+  <div class="wrap">
+    <div class="lbl lbl-red">📅 60-Day Blueprint</div>
+    <h2>Exact Day-by-Day Action Plan</h2>
+    <p class="sub">Follow this precisely. Based on the AI Tools channel (fastest to $10K).</p>
+
+    <div class="week-grid">
+
+      <div class="week">
+        <div class="week-header">
+          <span class="week-label wl-red">WEEK 1</span>
+          <span class="week-title">Setup Everything — Your Foundation</span>
+          <span class="week-income">Income: $0</span>
+        </div>
+        <div class="week-body">
+          <div class="day-block">
+            <h4>Day 1-2: Accounts</h4>
+            <ul>
+              <li>Create YouTube channel (channel art via Canva)</li>
+              <li>Sign up: ChatGPT, ElevenLabs, Canva, Invideo.io</li>
+              <li>Choose your niche (AI tools recommended)</li>
+              <li>Sign up for 3 affiliate programs</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Day 3-4: First Video</h4>
+            <ul>
+              <li>Pick topic: "Top 5 AI Tools That Replace Your Job"</li>
+              <li>ChatGPT writes the script (15 min)</li>
+              <li>ElevenLabs creates voiceover (10 min)</li>
+              <li>Invideo.io creates video (20 min)</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Day 5-7: Upload & Optimize</h4>
+            <ul>
+              <li>Upload first video with keyword-rich title</li>
+              <li>Add ALL affiliate links in description</li>
+              <li>Create 3 YouTube Shorts from the video</li>
+              <li>Post on Reddit + Facebook groups</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="week">
+        <div class="week-header">
+          <span class="week-label wl-green">WEEK 2-3</span>
+          <span class="week-title">Content Machine — Build Momentum</span>
+          <span class="week-income">Income: $0-200</span>
+        </div>
+        <div class="week-body">
+          <div class="day-block">
+            <h4>Content Schedule</h4>
+            <ul>
+              <li>Post 1 long video (8-12 min) every 3 days</li>
+              <li>Post 1 YouTube Short EVERY day</li>
+              <li>Total: 5 long videos + 14 Shorts in 3 weeks</li>
+              <li>Each long video takes ~1 hour to make</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Best Video Topics (AI niche)</h4>
+            <ul>
+              <li>"ChatGPT Prompts That Changed My Life"</li>
+              <li>"How to Use Midjourney to Make $500/Day"</li>
+              <li>"5 AI Tools Nobody Talks About"</li>
+              <li>"Replace [Job] With This Free AI Tool"</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Promotion Daily</h4>
+            <ul>
+              <li>Share in 5 Facebook/Reddit groups daily</li>
+              <li>Reply to every comment (boosts algorithm)</li>
+              <li>Post on Twitter/X with clip previews</li>
+              <li>Submit to relevant subreddits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="week">
+        <div class="week-header">
+          <span class="week-label wl-gold">WEEK 4-6</span>
+          <span class="week-title">Affiliate Income Starts — First Real $$$</span>
+          <span class="week-income">Income: $500-3,000</span>
+        </div>
+        <div class="week-body">
+          <div class="day-block">
+            <h4>Optimize for Affiliate $</h4>
+            <ul>
+              <li>Check which videos get most clicks on links</li>
+              <li>Make more videos on those topics</li>
+              <li>Add a "Tools I Use" pinned comment</li>
+              <li>Create a "Resources" section in every video</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Hit 1,000 Subscribers</h4>
+            <ul>
+              <li>Ask for subscriptions in every video</li>
+              <li>Run a simple giveaway (digital product)</li>
+              <li>Collaborate with similar small channels</li>
+              <li>Post "Subscribe if you want to learn AI" Shorts</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Reach Out for Sponsorship</h4>
+            <ul>
+              <li>Email AI tool companies: "I have X subscribers"</li>
+              <li>Try: ElevenLabs, Invideo, Canva, Jasper</li>
+              <li>Even small sponsorships = $100-300/video</li>
+              <li>5 sponsored videos = $500-1500 extra</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="week">
+        <div class="week-header">
+          <span class="week-label wl-purple">WEEK 7-8</span>
+          <span class="week-title">Scale to $10K — Viral Push</span>
+          <span class="week-income">Target: $5,000-10,000+</span>
+        </div>
+        <div class="week-body">
+          <div class="day-block">
+            <h4>The Viral Push Strategy</h4>
+            <ul>
+              <li>Make 1 "big bet" video on trending AI news</li>
+              <li>Title: "OpenAI Just Changed Everything — Here's How"</li>
+              <li>Promote HARD across all platforms</li>
+              <li>1 viral video = 500K+ views = $5K-10K affiliate+ads</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Launch a Digital Product</h4>
+            <ul>
+              <li>Create a "100 ChatGPT Prompts" PDF ($15)</li>
+              <li>Make it on Canva in 2 hours</li>
+              <li>Sell on Gumroad (free platform)</li>
+              <li>100 buyers × $15 = $1,500 extra revenue</li>
+            </ul>
+          </div>
+          <div class="day-block">
+            <h4>Check Your Numbers</h4>
+            <ul>
+              <li>Total affiliate commissions this week?</li>
+              <li>AdSense (should be monetized by now)</li>
+              <li>Sponsorship income?</li>
+              <li>Digital product sales?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VIRAL HOOKS ═══ -->
+<div class="section" style="background:#080c14;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="lbl lbl-purple">🎣 Viral Hooks</div>
+    <h2>50 Proven Video Title Formulas</h2>
+    <p class="sub">Copy these title structures. They get millions of views every time.</p>
+
+    <div class="hooks-grid">
+      <div class="hook-card"><strong>AI Niche</strong>"This FREE AI Tool Made Me $3,000 in One Week"</div>
+      <div class="hook-card"><strong>AI Niche</strong>"ChatGPT Told Me the Secret to Making Money Online (I Was Shocked)"</div>
+      <div class="hook-card"><strong>AI Niche</strong>"I Tested 50 AI Tools So You Don't Have To — Here Are the 5 Best"</div>
+      <div class="hook-card"><strong>AI Niche</strong>"This AI Tool Is So Powerful, Companies Are Trying to BAN It"</div>
+      <div class="hook-card"><strong>Finance</strong>"I Invested $1,000 in [X] — Here's What Happened After 1 Year"</div>
+      <div class="hook-card"><strong>Finance</strong>"The Money Secret Rich People Don't Want You to Know"</div>
+      <div class="hook-card"><strong>Finance</strong>"Stop Saving Money (Do This Instead)"</div>
+      <div class="hook-card"><strong>Finance</strong>"How to Turn $100 Into $10,000 — The Simple Method"</div>
+      <div class="hook-card"><strong>Business</strong>"How [Famous Person] Built a $10B Empire from Nothing"</div>
+      <div class="hook-card"><strong>Business</strong>"The Business Model That Makes $1M/Month While You Sleep"</div>
+      <div class="hook-card"><strong>Pakistan</strong>"گھر بیٹھے ڈالر کمانے کا سب سے آسان طریقہ 2025"</div>
+      <div class="hook-card"><strong>Pakistan</strong>"میں نے Fiverr پر پہلے مہینے PKR 150,000 کیسے کمائے"</div>
+      <div class="hook-card"><strong>True Crime</strong>"The Mystery Nobody Can Solve — Even After 50 Years"</div>
+      <div class="hook-card"><strong>Self-Help</strong>"Marcus Aurelius' 3 Rules That Will Change Your Life Forever"</div>
+      <div class="hook-card"><strong>Luxury</strong>"Inside Elon Musk's $100 Million Private Island — A Tour"</div>
+      <div class="hook-card"><strong>Geography</strong>"Why Is [Country] So Incredibly Rich? (The Real Reason)"</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOOLS ═══ -->
+<div class="section">
+  <div class="wrap">
+    <div class="lbl lbl-blue">🛠️ Complete Tool Stack</div>
+    <h2>Every Tool You Need to Start Today</h2>
+    <p class="sub">Total monthly cost: $0 to start, $20/month when scaling</p>
+
+    <div style="overflow-x:auto">
+      <table class="tools-table">
+        <thead>
+          <tr>
+            <th>Tool</th><th>Purpose</th><th>Best For</th><th>Cost</th><th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>ChatGPT</strong></td><td>Write scripts, titles, descriptions</td><td>All niches</td><td><span class="t-free">FREE</span></td><td>chat.openai.com</td></tr>
+          <tr><td><strong>ElevenLabs</strong></td><td>Ultra-realistic AI voiceover</td><td>All niches</td><td><span class="t-free">FREE (10K chars/mo)</span></td><td>elevenlabs.io</td></tr>
+          <tr><td><strong>Invideo AI</strong></td><td>Paste script → full video auto-generated</td><td>Beginners</td><td><span class="t-free">FREE tier</span></td><td>invideo.io</td></tr>
+          <tr><td><strong>Canva</strong></td><td>Thumbnails, channel art, graphics</td><td>All niches</td><td><span class="t-free">FREE</span></td><td>canva.com</td></tr>
+          <tr><td><strong>CapCut</strong></td><td>Video editing, auto-captions</td><td>Shorts</td><td><span class="t-free">FREE</span></td><td>capcut.com</td></tr>
+          <tr><td><strong>Pexels / Pixabay</strong></td><td>Free HD stock footage & photos</td><td>All niches</td><td><span class="t-free">FREE</span></td><td>pexels.com</td></tr>
+          <tr><td><strong>TubeBuddy</strong></td><td>Keyword research, SEO optimization</td><td>All niches</td><td><span class="t-free">FREE tier</span></td><td>tubebuddy.com</td></tr>
+          <tr><td><strong>VidIQ</strong></td><td>Find viral video ideas, competitor research</td><td>All niches</td><td><span class="t-free">FREE tier</span></td><td>vidiq.com</td></tr>
+          <tr><td><strong>YouTube Audio Library</strong></td><td>100% copyright-free background music</td><td>All niches</td><td><span class="t-free">FREE</span></td><td>studio.youtube.com</td></tr>
+          <tr><td><strong>Gumroad</strong></td><td>Sell digital products (PDFs, templates)</td><td>When scaling</td><td><span class="t-free">FREE (10% fee)</span></td><td>gumroad.com</td></tr>
+          <tr><td><strong>Payoneer</strong></td><td>Receive YouTube + affiliate payments in PK</td><td>Pakistan</td><td><span class="t-free">FREE</span></td><td>payoneer.com</td></tr>
+          <tr><td><strong>Wise</strong></td><td>Receive USD/EUR cheaply into Pakistan</td><td>Pakistan</td><td><span class="t-paid">~$5/transfer</span></td><td>wise.com</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHATGPT SCRIPT ═══ -->
+<div class="section" style="background:#080c14;border-top:1px solid var(--border)">
+  <div class="wrap">
+    <div class="lbl lbl-green">🤖 Copy-Paste Prompts</div>
+    <h2>ChatGPT Prompts to Make Any Video</h2>
+    <p class="sub">Copy these exactly. Change the [brackets] with your topic.</p>
+
+    <div class="script-box">
+      <h4>📝 Script Writing Prompt</h4>
+      <div class="script-content">You are a professional YouTube scriptwriter for faceless educational channels.
+
+Write an 8-minute YouTube script about: [YOUR TOPIC]
+
+Requirements:
+- Start with a SHOCKING hook in the first 15 seconds that makes people stay
+- Use short sentences (max 15 words each)
+- Add "[B-ROLL: show footage of X]" cues for visuals
+- Include 3 clear sections with transitions
+- Add a story or surprising fact every 2 minutes to keep attention
+- End with a strong call-to-action asking to subscribe
+- Total word count: 1,200-1,500 words
+- Tone: Conversational, slightly dramatic, educational
+
+Topic: [e.g., "Top 5 AI Tools That Replace 9-5 Jobs in 2025"]
+Target audience: People aged 25-45 who want to earn money online</div>
+      <div class="script-note">Takes 30 seconds. ChatGPT returns a complete, professional script ready for voiceover.</div>
+    </div>
+
+    <div class="script-box">
+      <h4>🎯 SEO Title & Description Prompt</h4>
+      <div class="script-content">Generate YouTube SEO content for this video:
+Topic: [YOUR VIDEO TOPIC]
+Niche: [AI Tools / Finance / Business Stories / etc.]
+
+Please create:
+1. 5 viral title options (include numbers, curiosity gaps, power words)
+2. Full video description (300 words with keywords naturally included)
+3. 20 relevant hashtags
+4. 10 tags for the video tags section
+
+Make titles clickable but NOT clickbait. They must deliver on their promise.</div>
+    </div>
+
+    <div class="script-box">
+      <h4>🎣 Shorts Hook Prompt</h4>
+      <div class="script-content">Write 10 YouTube Shorts hooks (first 3 seconds) for this topic: [TOPIC]
+
+Rules:
+- Must create INSTANT curiosity or shock
+- Maximum 15 words each
+- Should make the viewer STOP scrolling
+- Use pattern interrupts (unexpected statements)
+- Example format: "Nobody tells you this about [X] but it changed everything..."
+
+Topic: [e.g., ChatGPT, Making Money Online, Stoic Philosophy]</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p style="font-size:16px;font-weight:700;color:#94a3b8">🎬 Your Faceless YouTube Empire Starts With Video #1</p>
+  <p style="margin-top:8px">The channel you don't start today is the income you won't have in 6 months.</p>
+  <p style="margin-top:16px;color:#1e2d4a">Pick ONE niche. Make ONE video today. Post it. Then make another. That's the whole secret.</p>
+</footer>
+
+</body>
+</html>
