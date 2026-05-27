@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TaxEase — Fee Calculator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: #fff; border-radius: 20px; padding: 40px; max-width: 580px; width: 100%; box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+    .logo { text-align: center; margin-bottom: 28px; }
+    .logo h1 { font-size: 24px; font-weight: 800; color: #0f3460; }
+    .logo p { color: #6b7280; font-size: 14px; margin-top: 4px; }
+    h2 { font-size: 20px; font-weight: 700; color: #0f3460; margin-bottom: 24px; text-align: center; }
+    .question { margin-bottom: 20px; }
+    .question label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .option { border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: all 0.2s; font-size: 14px; color: #374151; }
+    .option:hover { border-color: #00b894; background: #f0fdf9; }
+    .option.selected { border-color: #00b894; background: #e8faf6; font-weight: 600; color: #0f3460; }
+    .option input[type="checkbox"] { display: none; }
+
+    .result { background: linear-gradient(135deg, #0f3460, #00b894); color: #fff; border-radius: 16px; padding: 28px; margin-top: 28px; text-align: center; display: none; }
+    .result.show { display: block; }
+    .result h3 { font-size: 16px; opacity: 0.85; margin-bottom: 8px; }
+    .result .price { font-size: 42px; font-weight: 800; margin-bottom: 6px; }
+    .result .desc { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
+    .result .features { text-align: left; margin-bottom: 20px; }
+    .result .features li { font-size: 14px; padding: 4px 0; list-style: none; }
+    .result .cta { display: inline-block; background: #fff; color: #0f3460; padding: 12px 28px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 15px; }
+    .result .cta:hover { background: #f0fdf9; }
+
+    .btn-calc { width: 100%; background: #00b894; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    .btn-calc:hover { background: #00a381; }
+    .btn-reset { width: 100%; background: none; color: #6b7280; border: 1px solid #e5e7eb; padding: 10px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <h1>🏛️ TaxEase Pakistan</h1>
+    <p>FBR Income Tax Consulting</p>
+  </div>
+  <h2>💰 Get Your Custom Fee Quote</h2>
+  <p style="text-align:center;color:#6b7280;font-size:14px;margin-bottom:24px;">Answer a few questions to get an instant price estimate.</p>
+
+  <div class="question">
+    <label>1. What best describes you?</label>
+    <div class="options" id="q1">
+      <div class="option" onclick="select('q1', this, 'salaried')">👔 Salaried Employee</div>
+      <div class="option" onclick="select('q1', this, 'freelancer')">💻 Freelancer / Remote Worker</div>
+      <div class="option" onclick="select('q1', this, 'business')">🏢 Business Owner / Trader</div>
+      <div class="option" onclick="select('q1', this, 'retired')">🏖️ Retired / Pension Income</div>
+    </div>
+  </div>
+
+  <div class="question">
+    <label>2. Do you own any property?</label>
+    <div class="options" id="q2">
+      <div class="option" onclick="select('q2', this, 'yes')">✅ Yes, I own property</div>
+      <div class="option" onclick="select('q2', this, 'no')">❌ No property</div>
+    </div>
+  </div>
+
+  <div class="question">
+    <label>3. Do you own a vehicle?</label>
+    <div class="options" id="q3">
+      <div class="option" onclick="select('q3', this, 'yes')">✅ Yes, I own a vehicle</div>
+      <div class="option" onclick="select('q3', this, 'no')">❌ No vehicle</div>
+    </div>
+  </div>
+
+  <div class="question">
+    <label>4. Do you have savings/investments?</label>
+    <div class="options" id="q4">
+      <div class="option" onclick="select('q4', this, 'yes')">✅ Yes (bank savings, mutual funds, etc.)</div>
+      <div class="option" onclick="select('q4', this, 'no')">❌ No significant savings</div>
+    </div>
+  </div>
+
+  <div class="question">
+    <label>5. Have you received an FBR notice?</label>
+    <div class="options" id="q5">
+      <div class="option" onclick="select('q5', this, 'yes')">⚠️ Yes, I received a notice</div>
+      <div class="option" onclick="select('q5', this, 'no')">✅ No, no notices</div>
+    </div>
+  </div>
+
+  <button class="btn-calc" onclick="calculate()">Calculate My Fee →</button>
+  <button class="btn-reset" onclick="reset()">Start Over</button>
+
+  <div class="result" id="result">
+    <h3>Estimated Fee for Your Return</h3>
+    <div class="price" id="resultPrice"></div>
+    <div class="desc" id="resultDesc"></div>
+    <ul class="features" id="resultFeatures"></ul>
+    <a href="#" class="cta" id="resultCTA" target="_blank">📱 WhatsApp to Confirm & Start</a>
+  </div>
+</div>
+
+<script>
+const answers = {};
+
+function select(qId, el, value) {
+  document.querySelectorAll(`#${qId} .option`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qId] = value;
+}
+
+function calculate() {
+  let fee = 0;
+  let features = [];
+  let desc = '';
+
+  const type = answers.q1;
+  const hasProperty = answers.q2 === 'yes';
+  const hasVehicle = answers.q3 === 'yes';
+  const hasSavings = answers.q4 === 'yes';
+  const hasNotice = answers.q5 === 'yes';
+
+  if (!type) { alert('Please answer all questions!'); return; }
+
+  // Base fee by type
+  if (type === 'salaried') { fee = 3500; desc = 'Basic Package — Salaried Employee'; features.push('✅ Salary income return', '✅ NTN registration (if needed)', '✅ FBR IRIS submission', '✅ 48-hour turnaround', '✅ E-filing acknowledgment'); }
+  else if (type === 'freelancer') { fee = 8000; desc = 'Standard Package — Freelancer'; features.push('✅ Foreign remittance income filing', '✅ Reduced fixed tax benefit', '✅ Business expense deductions', '✅ NTN registration', '✅ Complete wealth statement'); }
+  else if (type === 'business') { fee = 10000; desc = 'Standard+ Package — Business Owner'; features.push('✅ Business income & expenses', '✅ Profit/loss statement review', '✅ Tax credits & deductions', '✅ Complete wealth statement'); }
+  else if (type === 'retired') { fee = 4000; desc = 'Pension/Retired Package'; features.push('✅ Pension income return', '✅ Investment income declaration', '✅ NTN registration', '✅ Acknowledgment slip'); }
+
+  // Add-ons
+  if (hasProperty) { fee += 2000; features.push('✅ Property declaration in wealth statement'); }
+  if (hasVehicle) { fee += 1000; features.push('✅ Vehicle declaration'); }
+  if (hasSavings) { fee += 1000; features.push('✅ Investment & savings declaration'); }
+  if (hasNotice) { fee += 10000; features.push('⚠️ FBR notice response & resolution'); desc += ' + Notice Response'; }
+
+  // Display result
+  document.getElementById('resultPrice').textContent = `PKR ${fee.toLocaleString()}`;
+  document.getElementById('resultDesc').textContent = desc;
+  document.getElementById('resultFeatures').innerHTML = features.map(f => `<li>${f}</li>`).join('');
+
+  const msg = encodeURIComponent(`Hi TaxEase! I used your fee calculator.\n\nType: ${type}\nProperty: ${answers.q2}\nVehicle: ${answers.q3}\nSavings: ${answers.q4}\nFBR Notice: ${answers.q5}\n\nEstimated fee: PKR ${fee.toLocaleString()}\n\nPlease confirm and guide me on next steps.`);
+  document.getElementById('resultCTA').href = `https://wa.me/923000000000?text=${msg}`;
+
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+}
+
+function reset() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.getElementById('result').classList.remove('show');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TaxEase — Client & Revenue Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a1a2e; min-height: 100vh; }
+    .header { background: linear-gradient(135deg, #0f3460, #16213e); color: #fff; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
+    .header h1 { font-size: 22px; font-weight: 800; }
+    .header p { opacity: 0.7; font-size: 14px; margin-top: 4px; }
+
+    .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; padding: 24px 32px 0; }
+    .kpi-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .kpi-label { font-size: 12px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .kpi-value { font-size: 28px; font-weight: 800; }
+    .kpi-value.green { color: #00b894; }
+    .kpi-value.blue { color: #0f3460; }
+    .kpi-value.gold { color: #f39c12; }
+    .kpi-value.purple { color: #6c5ce7; }
+
+    .main { padding: 24px 32px; }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #0f3460; }
+
+    .add-client-form { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 9px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus { border-color: #00b894; }
+    .btn-add { background: #00b894; color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; }
+    .btn-add:hover { background: #00a381; }
+
+    .table-wrapper { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }
+    .table-header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f3f4f6; }
+    .search-input { padding: 8px 14px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; width: 240px; outline: none; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: #f9fafb; padding: 12px 16px; text-align: left; font-weight: 600; color: #374151; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e5e7eb; }
+    td { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; }
+    .badge-pending { background: #fef3c7; color: #d97706; }
+    .badge-inprogress { background: #dbeafe; color: #1d4ed8; }
+    .badge-filed { background: #d1fae5; color: #065f46; }
+    .badge-paid { background: #d1fae5; color: #065f46; }
+    .badge-unpaid { background: #fee2e2; color: #b91c1c; }
+
+    .action-btn { padding: 4px 10px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin: 0 2px; }
+    .btn-filed { background: #d1fae5; color: #065f46; }
+    .btn-paid { background: #dbeafe; color: #1d4ed8; }
+    .btn-del { background: #fee2e2; color: #b91c1c; }
+
+    .income-chart { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; margin-top: 16px; }
+    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar { width: 100%; background: #00b894; border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.5s; }
+    .bar-label { font-size: 11px; color: #6b7280; }
+    .bar-value { font-size: 11px; font-weight: 700; color: #0f3460; }
+
+    .export-btn { background: #0f3460; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; }
+    .export-btn:hover { background: #16213e; }
+
+    @media (max-width: 700px) {
+      .header, .main, .dashboard { padding: 16px; }
+      table { font-size: 12px; }
+      td, th { padding: 8px 10px; }
+      .search-input { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🏛️ TaxEase Pakistan — Client Tracker</h1>
+    <p>FBR Income Tax Consulting Business Dashboard</p>
+  </div>
+  <div style="text-align:right; font-size:14px; opacity:0.7;" id="currentDate"></div>
+</div>
+
+<!-- KPI Dashboard -->
+<div class="dashboard">
+  <div class="kpi-card"><div class="kpi-label">Total Clients</div><div class="kpi-value blue" id="totalClients">0</div></div>
+  <div class="kpi-card"><div class="kpi-label">Returns Filed</div><div class="kpi-value green" id="totalFiled">0</div></div>
+  <div class="kpi-card"><div class="kpi-label">Revenue (PKR)</div><div class="kpi-value gold" id="totalRevenue">0</div></div>
+  <div class="kpi-card"><div class="kpi-label">Collected (PKR)</div><div class="kpi-value green" id="collectedRevenue">0</div></div>
+  <div class="kpi-card"><div class="kpi-label">Pending Payment</div><div class="kpi-value purple" id="pendingPayment">0</div></div>
+  <div class="kpi-card"><div class="kpi-label">Revenue in USD</div><div class="kpi-value gold" id="revenueUSD">$0</div></div>
+</div>
+
+<div class="main">
+
+  <!-- Add Client Form -->
+  <div class="add-client-form">
+    <div class="section-title">➕ Add New Client</div>
+    <div class="form-row">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="f_name" placeholder="Muhammad Ali"/></div>
+      <div class="form-group"><label>WhatsApp Number</label><input type="text" id="f_phone" placeholder="03XX-XXXXXXX"/></div>
+      <div class="form-group"><label>CNIC</label><input type="text" id="f_cnic" placeholder="XXXXX-XXXXXXX-X"/></div>
+      <div class="form-group"><label>Client Type</label>
+        <select id="f_type">
+          <option>Salaried</option><option>Freelancer</option><option>Business Owner</option>
+          <option>Property Owner</option><option>Corporate</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Package</label>
+        <select id="f_package">
+          <option value="3500">Basic — PKR 3,500</option>
+          <option value="8000">Standard — PKR 8,000</option>
+          <option value="20000">Premium — PKR 20,000</option>
+          <option value="0">Custom (enter below)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Fee (PKR)</label><input type="number" id="f_fee" placeholder="3500"/></div>
+      <div class="form-group"><label>Tax Year</label>
+        <select id="f_year"><option>2025</option><option>2024</option><option>2023</option><option>2022</option></select>
+      </div>
+      <div class="form-group"><label>Date Added</label><input type="date" id="f_date"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Notes</label><input type="text" id="f_notes" placeholder="e.g. Has property, referred by Ahmed"/></div>
+      <div class="form-group" style="display:flex; align-items:flex-end;">
+        <button class="btn-add" onclick="addClient()">+ Add Client</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client Table -->
+  <div class="table-wrapper">
+    <div class="table-header">
+      <div class="section-title" style="margin:0">📋 All Clients</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by name, CNIC..." oninput="filterClients()"/>
+        <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="clientTable">
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>WhatsApp</th><th>Type</th>
+            <th>Package</th><th>Fee (PKR)</th><th>Year</th>
+            <th>Status</th><th>Payment</th><th>Date</th><th>Notes</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Monthly Income Chart -->
+  <div class="income-chart">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div class="section-title" style="margin:0">📈 Monthly Revenue (PKR)</div>
+      <span style="font-size:13px;color:#6b7280;">Last 6 months</span>
+    </div>
+    <div class="bar-chart" id="barChart"></div>
+  </div>
+
+</div>
+
+<script>
+// ===== DATA MANAGEMENT =====
+let clients = JSON.parse(localStorage.getItem('taxease_clients') || '[]');
+let nextId = parseInt(localStorage.getItem('taxease_nextId') || '1');
+const USD_RATE = 280;
+
+// Set today's date in form
+document.getElementById('f_date').value = new Date().toISOString().split('T')[0];
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-PK', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// Auto-fill fee when package changes
+document.getElementById('f_package').addEventListener('change', function() {
+  const val = this.value;
+  if (val !== '0') document.getElementById('f_fee').value = val;
+});
+
+function save() {
+  localStorage.setItem('taxease_clients', JSON.stringify(clients));
+  localStorage.setItem('taxease_nextId', String(nextId));
+}
+
+function addClient() {
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { alert('Please enter client name!'); return; }
+
+  const fee = parseInt(document.getElementById('f_fee').value) ||
+              parseInt(document.getElementById('f_package').value) || 0;
+
+  const client = {
+    id: nextId++,
+    name,
+    phone: document.getElementById('f_phone').value,
+    cnic: document.getElementById('f_cnic').value,
+    type: document.getElementById('f_type').value,
+    package: document.getElementById('f_package').options[document.getElementById('f_package').selectedIndex].text,
+    fee,
+    year: document.getElementById('f_year').value,
+    status: 'Pending',
+    payment: 'Unpaid',
+    date: document.getElementById('f_date').value,
+    notes: document.getElementById('f_notes').value
+  };
+
+  clients.unshift(client);
+  save();
+  renderTable();
+  updateKPIs();
+  updateChart();
+
+  // Reset form
+  document.getElementById('f_name').value = '';
+  document.getElementById('f_phone').value = '';
+  document.getElementById('f_cnic').value = '';
+  document.getElementById('f_fee').value = '';
+  document.getElementById('f_notes').value = '';
+}
+
+function markFiled(id) {
+  const c = clients.find(x => x.id === id);
+  if (c) { c.status = c.status === 'Filed' ? 'In Progress' : 'Filed'; save(); renderTable(); updateKPIs(); }
+}
+
+function markPaid(id) {
+  const c = clients.find(x => x.id === id);
+  if (c) { c.payment = c.payment === 'Paid' ? 'Unpaid' : 'Paid'; save(); renderTable(); updateKPIs(); updateChart(); }
+}
+
+function deleteClient(id) {
+  if (!confirm('Delete this client record?')) return;
+  clients = clients.filter(x => x.id !== id);
+  save(); renderTable(); updateKPIs(); updateChart();
+}
+
+let filteredClients = null;
+
+function filterClients() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  filteredClients = q ? clients.filter(c =>
+    c.name.toLowerCase().includes(q) || c.phone.includes(q) || c.cnic.includes(q) || c.type.toLowerCase().includes(q)
+  ) : null;
+  renderTable();
+}
+
+function renderTable() {
+  const data = filteredClients || clients;
+  const tbody = document.getElementById('tableBody');
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;color:#6b7280;padding:40px;">No clients yet. Add your first client above! 🎯</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map((c, i) => `
+    <tr>
+      <td style="color:#6b7280;font-size:12px;">${i + 1}</td>
+      <td><strong>${c.name}</strong></td>
+      <td><a href="https://wa.me/92${c.phone?.replace(/[^0-9]/g,'').slice(1)}" target="_blank" style="color:#00b894;text-decoration:none;">${c.phone || '—'}</a></td>
+      <td>${c.type}</td>
+      <td style="font-size:12px;">${c.package}</td>
+      <td><strong>PKR ${c.fee?.toLocaleString()}</strong></td>
+      <td>${c.year}</td>
+      <td><span class="badge badge-${c.status === 'Filed' ? 'filed' : c.status === 'In Progress' ? 'inprogress' : 'pending'}">${c.status}</span></td>
+      <td><span class="badge badge-${c.payment === 'Paid' ? 'paid' : 'unpaid'}">${c.payment}</span></td>
+      <td style="font-size:12px;color:#6b7280;">${c.date}</td>
+      <td style="font-size:12px;color:#6b7280;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${c.notes}">${c.notes || '—'}</td>
+      <td style="white-space:nowrap;">
+        <button class="action-btn btn-filed" onclick="markFiled(${c.id})">${c.status === 'Filed' ? '↩ Undo' : '✅ Filed'}</button>
+        <button class="action-btn btn-paid" onclick="markPaid(${c.id})">${c.payment === 'Paid' ? '↩ Unpaid' : '💰 Paid'}</button>
+        <button class="action-btn btn-del" onclick="deleteClient(${c.id})">🗑</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updateKPIs() {
+  const total = clients.length;
+  const filed = clients.filter(c => c.status === 'Filed').length;
+  const totalRev = clients.reduce((s, c) => s + (c.fee || 0), 0);
+  const collected = clients.filter(c => c.payment === 'Paid').reduce((s, c) => s + (c.fee || 0), 0);
+  const pending = totalRev - collected;
+
+  document.getElementById('totalClients').textContent = total;
+  document.getElementById('totalFiled').textContent = filed;
+  document.getElementById('totalRevenue').textContent = totalRev.toLocaleString();
+  document.getElementById('collectedRevenue').textContent = collected.toLocaleString();
+  document.getElementById('pendingPayment').textContent = pending.toLocaleString();
+  document.getElementById('revenueUSD').textContent = '$' + Math.round(collected / USD_RATE).toLocaleString();
+}
+
+function updateChart() {
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date();
+    d.setMonth(d.getMonth() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const label = d.toLocaleDateString('en', { month: 'short' });
+    const total = clients
+      .filter(c => c.payment === 'Paid' && c.date?.startsWith(key))
+      .reduce((s, c) => s + (c.fee || 0), 0);
+    months.push({ label, total });
+  }
+  const max = Math.max(...months.map(m => m.total), 1);
+  document.getElementById('barChart').innerHTML = months.map(m => `
+    <div class="bar-wrap">
+      <div class="bar-value">${m.total > 0 ? (m.total / 1000).toFixed(0) + 'K' : ''}</div>
+      <div class="bar" style="height:${Math.max((m.total / max) * 100, m.total > 0 ? 8 : 2)}px; background: ${m.total > 0 ? '#00b894' : '#e5e7eb'};"></div>
+      <div class="bar-label">${m.label}</div>
+    </div>
+  `).join('');
+}
+
+function exportCSV() {
+  const headers = ['ID','Name','WhatsApp','CNIC','Type','Package','Fee (PKR)','Tax Year','Status','Payment','Date Added','Notes'];
+  const rows = clients.map(c => [c.id, c.name, c.phone, c.cnic, c.type, c.package, c.fee, c.year, c.status, c.payment, c.date, c.notes]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${v || ''}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `taxease_clients_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+
+// ===== SAMPLE DATA for first-time users =====
+if (clients.length === 0) {
+  clients = [
+    { id: 1, name: 'Ahmed Khan (Sample)', phone: '0300-1234567', cnic: '12345-1234567-1', type: 'Salaried', package: 'Basic — PKR 3,500', fee: 3500, year: '2025', status: 'Filed', payment: 'Paid', date: new Date().toISOString().split('T')[0], notes: 'Sample entry — delete when ready' }
+  ];
+  nextId = 2;
+  save();
+}
+
+// ===== INIT =====
+renderTable();
+updateKPIs();
+updateChart();
+</script>
+</body>
+</html>
