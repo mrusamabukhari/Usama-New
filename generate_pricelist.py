@@ -1,416 +1,460 @@
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import mm
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, HRFlowable
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import (SimpleDocTemplate, Table, TableStyle,
+                                 Paragraph, Spacer, Image)
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
-from reportlab.platypus import KeepTogether
+from reportlab.pdfgen import canvas
+from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame
 
-# Colors matching the logo
-MAROON    = colors.HexColor('#7B1C3E')
+# ── Brand colours (from logo) ─────────────────────────────────────────────────
+MAROON    = colors.HexColor('#6B1535')
+MAROON2   = colors.HexColor('#8B1F42')
 GOLD      = colors.HexColor('#C9A84C')
-DARK_GOLD = colors.HexColor('#9A7A2A')
+GOLD_LITE = colors.HexColor('#E8D5A3')
 CREAM     = colors.HexColor('#FDF8F0')
+CREAM2    = colors.HexColor('#FAF3E5')
 WHITE     = colors.white
-LIGHT_GRAY= colors.HexColor('#F5F5F5')
-DARK_TEXT = colors.HexColor('#2C2C2C')
+DARK      = colors.HexColor('#1E1E1E')
+MID       = colors.HexColor('#4A4A4A')
 
-W, H = A4
+LOGO_PATH = "/root/.claude/uploads/821548fa-6491-4125-8b13-35cb95ca5b0f/bbf1cd60-1000645012.jpg"
+OUT_PATH  = "/home/user/Usama-New/AKH_Linen_House_PriceList.pdf"
 
+WA    = "+92 334 006 5781"
+EMAIL = "akhlinenhouse@gmail.com"
+
+W, H = A4  # 210 × 297 mm
+
+# ── Page border decorator ──────────────────────────────────────────────────────
+def page_border(c, doc):
+    c.saveState()
+    # Outer gold border
+    c.setStrokeColor(GOLD)
+    c.setLineWidth(2.5)
+    c.roundRect(8*mm, 8*mm, W-16*mm, H-16*mm, 4, stroke=1, fill=0)
+    # Inner thin maroon border
+    c.setStrokeColor(MAROON)
+    c.setLineWidth(0.6)
+    c.roundRect(10.5*mm, 10.5*mm, W-21*mm, H-21*mm, 3, stroke=1, fill=0)
+    c.restoreState()
+
+# ── Document setup ─────────────────────────────────────────────────────────────
 doc = SimpleDocTemplate(
-    "/home/user/Usama-New/AKH_Linen_House_PriceList.pdf",
-    pagesize=A4,
-    rightMargin=15*mm,
-    leftMargin=15*mm,
-    topMargin=10*mm,
-    bottomMargin=12*mm,
+    OUT_PATH, pagesize=A4,
+    rightMargin=16*mm, leftMargin=16*mm,
+    topMargin=13*mm, bottomMargin=13*mm,
+    onPage=page_border,
 )
 
-styles = getSampleStyleSheet()
-story  = []
+story = []
+CW = 178*mm   # usable content width
 
-# ── LOGO ──────────────────────────────────────────────────────────────────────
-logo = Image(
-    "/root/.claude/uploads/821548fa-6491-4125-8b13-35cb95ca5b0f/bbf1cd60-1000645012.jpg",
-    width=55*mm, height=38*mm
+# ── Paragraph style factory ────────────────────────────────────────────────────
+def ps(name, size=8, color=DARK, font='Helvetica', align=TA_CENTER,
+       leading=None, bold=False, leftIndent=0, spaceAfter=0):
+    if bold:
+        font = font + '-Bold'
+    return ParagraphStyle(name, fontSize=size, textColor=color,
+                          fontName=font, alignment=align,
+                          leading=leading or size*1.35,
+                          leftIndent=leftIndent, spaceAfter=spaceAfter)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# HEADER — Logo + company name + contact strip
+# ══════════════════════════════════════════════════════════════════════════════
+logo = Image(LOGO_PATH, width=52*mm, height=36*mm)
+
+company_block = [
+    Paragraph("AKH LINEN HOUSE",
+              ps('co', 20, MAROON, bold=True, leading=24)),
+    Spacer(1, 1.5*mm),
+    Paragraph("Pakistani Textile Export Agency",
+              ps('co2', 9, GOLD, leading=12)),
+    Spacer(1, 1*mm),
+    Paragraph("Bed Linen  •  Towels  •  Fabric  •  Prayer Mats",
+              ps('co3', 7.5, MID, leading=11)),
+]
+
+hdr_inner = Table(
+    [[logo, [Spacer(1,6*mm)] + company_block]],
+    colWidths=[56*mm, 122*mm]
 )
-logo.hAlign = 'CENTER'
-story.append(logo)
-story.append(Spacer(1, 2*mm))
-
-# ── HEADER BANNER ─────────────────────────────────────────────────────────────
-hdr_style = ParagraphStyle('hdr', fontSize=7.5, textColor=WHITE,
-                            alignment=TA_CENTER, fontName='Helvetica',
-                            spaceAfter=0, spaceBefore=0, leading=11)
-hdr_data = [[
-    Paragraph("WhatsApp: [Your Number]", hdr_style),
-    Paragraph("AKH LINEN HOUSE — Pakistani Textile Export Agency",
-              ParagraphStyle('hdr2', fontSize=7.5, textColor=GOLD,
-                             alignment=TA_CENTER, fontName='Helvetica-Bold',
-                             leading=11)),
-    Paragraph("Email: [Your Email]", hdr_style),
-]]
-hdr_table = Table(hdr_data, colWidths=[55*mm, 72*mm, 53*mm])
-hdr_table.setStyle(TableStyle([
-    ('BACKGROUND', (0,0), (-1,-1), MAROON),
-    ('VALIGN',     (0,0), (-1,-1), 'MIDDLE'),
-    ('TOPPADDING', (0,0), (-1,-1), 4),
-    ('BOTTOMPADDING',(0,0),(-1,-1),4),
-    ('LEFTPADDING',(0,0),(-1,-1), 6),
-    ('RIGHTPADDING',(0,0),(-1,-1),6),
+hdr_inner.setStyle(TableStyle([
+    ('VALIGN',        (0,0),(-1,-1), 'MIDDLE'),
+    ('LEFTPADDING',   (0,0),(-1,-1), 0),
+    ('RIGHTPADDING',  (0,0),(-1,-1), 0),
+    ('TOPPADDING',    (0,0),(-1,-1), 0),
+    ('BOTTOMPADDING', (0,0),(-1,-1), 0),
 ]))
-story.append(hdr_table)
+story.append(hdr_inner)
 story.append(Spacer(1, 3*mm))
 
-# ── TITLE BOX ─────────────────────────────────────────────────────────────────
-title_style = ParagraphStyle('title', fontSize=11, textColor=WHITE,
-                              alignment=TA_CENTER, fontName='Helvetica-Bold',
-                              leading=15)
-sub_style   = ParagraphStyle('sub', fontSize=7.5, textColor=GOLD,
-                              alignment=TA_CENTER, fontName='Helvetica',
-                              leading=11)
-title_data = [[
-    Paragraph("WHOLESALE PRICE LIST — NAIF SOUK DUBAI", title_style),
-    Paragraph("All Prices: FOB Karachi (USD)  |  Delivery: 7–10 Days  |  Payment: 30% Advance / 70% Before Shipment", sub_style),
+# Gold divider line
+div = Table([['']], colWidths=[CW], rowHeights=[1.8])
+div.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),GOLD)]))
+story.append(div)
+story.append(Spacer(1, 2*mm))
+
+# Contact strip
+contact_data = [[
+    Paragraph(f"<b>WhatsApp:</b>  {WA}",
+              ps('ct1', 8, WHITE, align=TA_LEFT,  leading=11)),
+    Paragraph("WHOLESALE PRICE LIST",
+              ps('ct2', 9, GOLD,  align=TA_CENTER, leading=12, bold=True)),
+    Paragraph(f"<b>Email:</b>  {EMAIL}",
+              ps('ct3', 8, WHITE, align=TA_RIGHT, leading=11)),
 ]]
-title_table = Table(title_data, colWidths=[180*mm])
-title_table.setStyle(TableStyle([
-    ('BACKGROUND', (0,0),(-1,-1), MAROON),
-    ('TOPPADDING', (0,0),(-1,-1), 5),
-    ('BOTTOMPADDING',(0,0),(-1,-1),5),
-    ('LEFTPADDING',(0,0),(-1,-1),8),
-    ('RIGHTPADDING',(0,0),(-1,-1),8),
-    ('ROUNDEDCORNERS',[3,3,3,3]),
+ct = Table(contact_data, colWidths=[62*mm, 62*mm, 54*mm])
+ct.setStyle(TableStyle([
+    ('BACKGROUND',    (0,0),(-1,-1), MAROON),
+    ('VALIGN',        (0,0),(-1,-1), 'MIDDLE'),
+    ('TOPPADDING',    (0,0),(-1,-1), 5),
+    ('BOTTOMPADDING', (0,0),(-1,-1), 5),
+    ('LEFTPADDING',   (0,0),(-1,-1), 8),
+    ('RIGHTPADDING',  (0,0),(-1,-1), 8),
+    ('LINEBELOW',     (0,0),(-1,0),  1, GOLD),
 ]))
-story.append(title_table)
+story.append(ct)
+story.append(Spacer(1, 2*mm))
+
+# Sub-info strip
+info_data = [[
+    Paragraph("All Prices: FOB Karachi (USD)",
+              ps('inf1', 7.5, MAROON, align=TA_LEFT,   bold=True)),
+    Paragraph("Delivery: Karachi → Dubai  7–10 Days",
+              ps('inf2', 7.5, MAROON, align=TA_CENTER, bold=True)),
+    Paragraph("Payment: 30% Advance / 70% Before Shipment",
+              ps('inf3', 7.5, MAROON, align=TA_RIGHT,  bold=True)),
+]]
+inf = Table(info_data, colWidths=[60*mm, 70*mm, 48*mm])
+inf.setStyle(TableStyle([
+    ('BACKGROUND',    (0,0),(-1,-1), CREAM2),
+    ('VALIGN',        (0,0),(-1,-1), 'MIDDLE'),
+    ('TOPPADDING',    (0,0),(-1,-1), 4),
+    ('BOTTOMPADDING', (0,0),(-1,-1), 4),
+    ('LEFTPADDING',   (0,0),(-1,-1), 8),
+    ('RIGHTPADDING',  (0,0),(-1,-1), 8),
+    ('BOX',           (0,0),(-1,-1), 0.8, GOLD),
+]))
+story.append(inf)
 story.append(Spacer(1, 4*mm))
 
-# ── HELPER: section header ─────────────────────────────────────────────────────
-def section_header(number, title, subtitle):
-    s = ParagraphStyle('sh', fontSize=9.5, textColor=WHITE,
-                       fontName='Helvetica-Bold', leading=13)
-    s2= ParagraphStyle('sh2',fontSize=7.5, textColor=GOLD,
-                       fontName='Helvetica', leading=11)
-    t = Table([[Paragraph(f"{number}.  {title}", s),
-                Paragraph(subtitle, s2)]],
-              colWidths=[90*mm, 90*mm])
+# ── HELPERS ────────────────────────────────────────────────────────────────────
+def sec_hdr(num, title, subtitle):
+    left = Paragraph(
+        f'<font color="#C9A84C"><b>{num}</b></font>'
+        f'<font color="#FFFFFF">  {title}</font>',
+        ps('sh', 10, WHITE, bold=False, align=TA_LEFT, leading=14))
+    right = Paragraph(subtitle, ps('sh2', 7.5, GOLD_LITE, align=TA_RIGHT, leading=11))
+    t = Table([[left, right]], colWidths=[105*mm, 73*mm])
     t.setStyle(TableStyle([
-        ('BACKGROUND', (0,0),(-1,-1), MAROON),
-        ('VALIGN',     (0,0),(-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0),(-1,-1), 5),
-        ('BOTTOMPADDING',(0,0),(-1,-1),5),
-        ('LEFTPADDING',(0,0),(-1,-1),8),
-        ('RIGHTPADDING',(0,0),(-1,-1),8),
+        ('BACKGROUND',    (0,0),(-1,-1), MAROON),
+        ('VALIGN',        (0,0),(-1,-1), 'MIDDLE'),
+        ('TOPPADDING',    (0,0),(-1,-1), 6),
+        ('BOTTOMPADDING', (0,0),(-1,-1), 6),
+        ('LEFTPADDING',   (0,0),(-1,-1), 10),
+        ('RIGHTPADDING',  (0,0),(-1,-1), 10),
+        ('LINEBELOW',     (0,0),(-1,-1), 1.5, GOLD),
     ]))
     return t
 
-# ── HELPER: spec line ──────────────────────────────────────────────────────────
-def spec_para(text):
-    return Paragraph(f"<font color='#{MAROON.hexval()[2:]}'>▸</font>  {text}",
-                     ParagraphStyle('sp', fontSize=7.5, textColor=DARK_TEXT,
-                                    fontName='Helvetica', leading=11,
-                                    leftIndent=4))
+def spec(text):
+    return Paragraph(
+        f'<font color="#6B1535"><b>›</b></font>  {text}',
+        ps('sp', 7.5, MID, align=TA_LEFT, leading=12, leftIndent=3))
 
-# ── HELPER: price table ────────────────────────────────────────────────────────
-def price_table(headers, rows, col_widths):
-    h_style = ParagraphStyle('th', fontSize=8, textColor=WHITE,
-                              fontName='Helvetica-Bold', alignment=TA_CENTER)
-    r_style = ParagraphStyle('td', fontSize=8, textColor=DARK_TEXT,
-                              fontName='Helvetica', alignment=TA_CENTER)
-    b_style = ParagraphStyle('td2',fontSize=8, textColor=MAROON,
-                              fontName='Helvetica-Bold', alignment=TA_CENTER)
-
-    data = [[Paragraph(h, h_style) for h in headers]]
-    for i, row in enumerate(rows):
-        styled = []
-        for j, cell in enumerate(row):
-            if j == 0:
-                styled.append(Paragraph(cell, r_style))
-            else:
-                styled.append(Paragraph(cell, b_style))
-        data.append(styled)
-
-    t = Table(data, colWidths=col_widths)
-    ts = TableStyle([
-        ('BACKGROUND', (0,0),(-1,0),  MAROON),
-        ('BACKGROUND', (0,1),(-1,1),  CREAM),
-        ('BACKGROUND', (0,2),(-1,2),  WHITE),
-        ('BACKGROUND', (0,3),(-1,3),  CREAM),
-        ('BACKGROUND', (0,4),(-1,4),  WHITE) if len(rows)>3 else ('SPAN',(0,0),(0,0)),
-        ('ROWBACKGROUNDS',(0,1),(-1,-1),[CREAM, WHITE]),
-        ('GRID',       (0,0),(-1,-1), 0.5, GOLD),
-        ('VALIGN',     (0,0),(-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0),(-1,-1), 4),
-        ('BOTTOMPADDING',(0,0),(-1,-1),4),
-        ('LEFTPADDING',(0,0),(-1,-1), 4),
-        ('RIGHTPADDING',(0,0),(-1,-1),4),
-    ])
-    t.setStyle(ts)
+def price_tbl(headers, rows, widths):
+    th = ps('th', 8, WHITE, bold=True, align=TA_CENTER)
+    td = ps('td', 8, DARK,  align=TA_CENTER)
+    tv = ps('tv', 8, MAROON, bold=True, align=TA_CENTER)
+    data = [[Paragraph(h, th) for h in headers]]
+    for r in rows:
+        data.append([Paragraph(r[0], td)] +
+                    [Paragraph(c, tv) for c in r[1:]])
+    t = Table(data, colWidths=widths)
+    t.setStyle(TableStyle([
+        ('BACKGROUND',    (0,0),  (-1,0),  MAROON),
+        ('ROWBACKGROUNDS',(0,1),  (-1,-1), [CREAM, WHITE]),
+        ('GRID',          (0,0),  (-1,-1), 0.5, GOLD),
+        ('VALIGN',        (0,0),  (-1,-1), 'MIDDLE'),
+        ('TOPPADDING',    (0,0),  (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0),  (-1,-1), 4),
+        ('LEFTPADDING',   (0,0),  (-1,-1), 4),
+        ('RIGHTPADDING',  (0,0),  (-1,-1), 4),
+        ('LINEBELOW',     (0,-1), (-1,-1), 1, GOLD),
+    ]))
     return t
 
-def moq_line(moq, lead):
+def moq(qty, days):
     return Paragraph(
-        f"<font color='#{MAROON.hexval()[2:]}'>MOQ:</font> <b>{moq}</b>    "
-        f"<font color='#{MAROON.hexval()[2:]}'>Lead Time:</font> <b>{lead}</b>",
-        ParagraphStyle('moq', fontSize=7.5, textColor=DARK_TEXT,
-                       fontName='Helvetica', alignment=TA_RIGHT, leading=11)
+        f'<font color="#6B1535"><b>MOQ:</b></font> {qty}'
+        f'&nbsp;&nbsp;&nbsp;'
+        f'<font color="#6B1535"><b>Lead Time:</b></font> {days}',
+        ps('mq', 7.5, MID, align=TA_RIGHT, leading=11))
+
+def product_row(specs, pt, spec_w=88*mm, tbl_w=90*mm):
+    inner = Table([[s] for s in specs], colWidths=[spec_w-2*mm])
+    inner.setStyle(TableStyle([
+        ('TOPPADDING',    (0,0),(-1,-1), 1),
+        ('BOTTOMPADDING', (0,0),(-1,-1), 1),
+        ('LEFTPADDING',   (0,0),(-1,-1), 0),
+        ('RIGHTPADDING',  (0,0),(-1,-1), 0),
+    ]))
+    combo = Table([[inner, pt]], colWidths=[spec_w, tbl_w])
+    combo.setStyle(TableStyle([
+        ('VALIGN',        (0,0),(-1,-1), 'TOP'),
+        ('LEFTPADDING',   (0,0),(-1,-1), 0),
+        ('RIGHTPADDING',  (0,0),(-1,-1), 0),
+        ('TOPPADDING',    (0,0),(-1,-1), 2),
+        ('BOTTOMPADDING', (0,0),(-1,-1), 2),
+    ]))
+    return combo
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 1. MACAWIIS
+# ══════════════════════════════════════════════════════════════════════════════
+story.append(sec_hdr("01", "MACAWIIS — Cotton Checked Fabric",
+                     "Men's Traditional Sarong  |  #1 Somali Item"))
+story.append(Spacer(1, 2*mm))
+story.append(product_row(
+    [spec("Material: 100% Cotton  |  GSM: 80–100"),
+     spec("Size (finished): 150 cm × 200 cm"),
+     spec("Pattern: Checked — White+Blue / White+Green / White+Red"),
+     spec("Custom colours available on bulk orders")],
+    price_tbl(
+        ["Quantity", "Price / Piece", "Price / Dozen"],
+        [["500 – 999 pcs",     "$ 2.50", "$ 28.00"],
+         ["1,000 – 2,999 pcs", "$ 2.20", "$ 25.00"],
+         ["3,000 – 4,999 pcs", "$ 1.90", "$ 22.00"],
+         ["5,000 + pcs",       "$ 1.60", "$ 18.50"]],
+        [64*mm, 58*mm, 58*mm]
     )
+))
+story.append(moq("500 pieces", "10–14 days"))
+story.append(Spacer(1, 3.5*mm))
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PRODUCT 1 — MACAWIIS
+# 2. BAATI FABRIC
 # ══════════════════════════════════════════════════════════════════════════════
-story.append(section_header("1","MACAWIIS — Cotton Checked Fabric","Men's Traditional Sarong  |  Most Popular Somali Item"))
-story.append(Spacer(1,2*mm))
-
-spec_col = [
-    spec_para("Material: 100% Cotton"),
-    spec_para("Size: 150 cm × 200 cm (Ready-to-wear)"),
-    spec_para("GSM: 80–100 GSM  |  Width: 150 cm"),
-    spec_para("Pattern: Checked — White+Blue / White+Green / White+Red"),
-]
-pt1 = price_table(
-    ["Quantity","Price / Piece","Price / Dozen"],
-    [
-        ["500 – 999 pcs",    "$ 2.50", "$ 28.00"],
-        ["1,000 – 2,999 pcs","$ 2.20", "$ 25.00"],
-        ["3,000 – 4,999 pcs","$ 1.90", "$ 22.00"],
-        ["5,000 + pcs",      "$ 1.60", "$ 18.50"],
-    ],
-    [65*mm, 57.5*mm, 57.5*mm]
-)
-combo1 = Table([[Table([[s] for s in spec_col], colWidths=[88*mm]), pt1]],
-               colWidths=[90*mm,90*mm])
-combo1.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
-                             ('LEFTPADDING',(0,0),(-1,-1),0),
-                             ('RIGHTPADDING',(0,0),(-1,-1),0),]))
-story.append(combo1)
-story.append(moq_line("500 pieces","10–14 days"))
-story.append(Spacer(1,4*mm))
+story.append(sec_hdr("02", "BAATI FABRIC — Plain Cotton",
+                     "Women's House Dress Fabric  |  White & Soft Colours"))
+story.append(Spacer(1, 2*mm))
+story.append(product_row(
+    [spec("Material: 100% Cotton / Cotton-Rayon Blend"),
+     spec("Width: 150 cm  |  GSM: 60–80"),
+     spec("Colours: White, Cream, Light Pastels, Soft Prints"),
+     spec("Sold per meter or full roll (60 m/roll)")],
+    price_tbl(
+        ["Quantity", "Price / Meter", "Price / Roll (60m)"],
+        [["200 – 499 m",       "$ 1.20", "$ 68.00"],
+         ["500 – 999 m",       "$ 1.05", "$ 60.00"],
+         ["1,000 – 1,999 m",   "$ 0.90", "$ 52.00"],
+         ["2,000 + m",         "$ 0.75", "$ 43.00"]],
+        [64*mm, 58*mm, 58*mm]
+    )
+))
+story.append(moq("200 meters", "7–10 days"))
+story.append(Spacer(1, 3.5*mm))
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PRODUCT 2 — BAATI FABRIC
+# 3. WHITE BED SHEET
 # ══════════════════════════════════════════════════════════════════════════════
-story.append(section_header("2","BAATI FABRIC — Plain Cotton","Women's House Dress Fabric  |  White & Light Colors"))
-story.append(Spacer(1,2*mm))
-
-spec_col2 = [
-    spec_para("Material: 100% Cotton / Cotton-Rayon Blend"),
-    spec_para("Width: 150 cm  |  GSM: 60–80 GSM"),
-    spec_para("Color: White, Cream, Light Colors, Soft Prints"),
-    spec_para("Sold by meter or full roll (60 meters/roll)"),
-]
-pt2 = price_table(
-    ["Quantity","Price / Meter","Price / Roll (60m)"],
-    [
-        ["200 – 499 meters",  "$ 1.20","$ 68.00"],
-        ["500 – 999 meters",  "$ 1.05","$ 60.00"],
-        ["1,000 – 1,999 mtr", "$ 0.90","$ 52.00"],
-        ["2,000 + meters",    "$ 0.75","$ 43.00"],
-    ],
-    [65*mm, 57.5*mm, 57.5*mm]
-)
-combo2 = Table([[Table([[s] for s in spec_col2], colWidths=[88*mm]), pt2]],
-               colWidths=[90*mm,90*mm])
-combo2.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
-                             ('LEFTPADDING',(0,0),(-1,-1),0),
-                             ('RIGHTPADDING',(0,0),(-1,-1),0),]))
-story.append(combo2)
-story.append(moq_line("200 meters","7–10 days"))
-story.append(Spacer(1,4*mm))
+story.append(sec_hdr("03", "WHITE BED SHEET — Double Size",
+                     "100% Cotton  |  200 TC  |  Hotel & Household Grade"))
+story.append(Spacer(1, 2*mm))
+story.append(product_row(
+    [spec("Size: 81\" × 96\"  (206 × 244 cm) — Double"),
+     spec("Thread Count: 200 TC  |  Material: 100% Cotton"),
+     spec("Colour: White Only  |  Export polybag packing"),
+     spec("Set = 1 Flat Sheet + 2 Pillowcases (20\" × 26\")")],
+    price_tbl(
+        ["Quantity", "Price / Piece", "Set Price (+2 PC)"],
+        [["200 – 499 pcs",     "$ 6.50", "$ 9.00"],
+         ["500 – 999 pcs",     "$ 5.80", "$ 8.00"],
+         ["1,000 – 2,999 pcs", "$ 5.20", "$ 7.20"],
+         ["3,000 + pcs",       "$ 4.50", "$ 6.20"]],
+        [64*mm, 58*mm, 58*mm]
+    )
+))
+story.append(moq("200 pieces", "10–12 days"))
+story.append(Spacer(1, 3.5*mm))
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PRODUCT 3 — BED SHEET
+# 4. BATH TOWEL
 # ══════════════════════════════════════════════════════════════════════════════
-story.append(section_header("3","WHITE BED SHEET — Double Size","100% Cotton  |  200 TC  |  Hotel & Household"))
-story.append(Spacer(1,2*mm))
-
-spec_col3 = [
-    spec_para("Size: 81\" × 96\" (206 × 244 cm)  — Double"),
-    spec_para("Thread Count: 200 TC  |  Material: 100% Cotton"),
-    spec_para("Color: White Only"),
-    spec_para("Set = 1 Flat Sheet + 2 Pillowcases (20\"×26\")"),
-]
-pt3 = price_table(
-    ["Quantity","Price / Piece","Price / Set (+2 PC)"],
-    [
-        ["200 – 499 pcs",    "$ 6.50","$ 9.00"],
-        ["500 – 999 pcs",    "$ 5.80","$ 8.00"],
-        ["1,000 – 2,999 pcs","$ 5.20","$ 7.20"],
-        ["3,000 + pcs",      "$ 4.50","$ 6.20"],
-    ],
-    [65*mm, 57.5*mm, 57.5*mm]
-)
-combo3 = Table([[Table([[s] for s in spec_col3], colWidths=[88*mm]), pt3]],
-               colWidths=[90*mm,90*mm])
-combo3.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
-                             ('LEFTPADDING',(0,0),(-1,-1),0),
-                             ('RIGHTPADDING',(0,0),(-1,-1),0),]))
-story.append(combo3)
-story.append(moq_line("200 pieces","10–12 days"))
-story.append(Spacer(1,4*mm))
+story.append(sec_hdr("04", "WHITE BATH TOWEL — Hotel Grade",
+                     "70×140 cm  |  400 GSM  |  100% Ring-Spun Cotton"))
+story.append(Spacer(1, 2*mm))
+story.append(product_row(
+    [spec("Size: 70 × 140 cm  |  Weight: 400 GSM"),
+     spec("Material: 100% Ring-Spun Cotton"),
+     spec("Colour: White Only  |  Individually polybag packed"),
+     spec("Set = Bath Towel + Hand Towel + Face Towel (3 pcs)")],
+    price_tbl(
+        ["Quantity", "Price / Piece", "3-Piece Set"],
+        [["500 – 999 pcs",     "$ 3.20", "$ 5.50"],
+         ["1,000 – 2,999 pcs", "$ 2.80", "$ 4.80"],
+         ["3,000 – 4,999 pcs", "$ 2.40", "$ 4.20"],
+         ["5,000 + pcs",       "$ 2.00", "$ 3.50"]],
+        [64*mm, 58*mm, 58*mm]
+    )
+))
+story.append(moq("500 pieces", "10–14 days"))
+story.append(Spacer(1, 3.5*mm))
 
 # ══════════════════════════════════════════════════════════════════════════════
-# PRODUCT 4 — BATH TOWEL
+# 5 & 6 — PRAYER MAT  +  PLAIN COTTON FABRIC  (side by side)
 # ══════════════════════════════════════════════════════════════════════════════
-story.append(section_header("4","WHITE BATH TOWEL — Hotel Grade","70×140 cm  |  400 GSM  |  100% Cotton Ring Spun"))
-story.append(Spacer(1,2*mm))
+def mini_sec(num, title, sub):
+    tp = Paragraph(
+        f'<font color="#C9A84C"><b>{num}</b></font>'
+        f'<font color="#FFFFFF">  {title}</font>',
+        ps('msh', 9, WHITE, bold=False, align=TA_LEFT, leading=13))
+    sp2 = Paragraph(sub, ps('mss', 7, GOLD_LITE, align=TA_LEFT, leading=10))
+    t = Table([[tp],[sp2]], colWidths=[85*mm])
+    t.setStyle(TableStyle([
+        ('BACKGROUND',    (0,0),(-1,-1), MAROON),
+        ('TOPPADDING',    (0,0),(-1,-1), 5),
+        ('BOTTOMPADDING', (0,0),(-1,-1), 5),
+        ('LEFTPADDING',   (0,0),(-1,-1), 8),
+        ('RIGHTPADDING',  (0,0),(-1,-1), 8),
+        ('LINEBELOW',     (0,-1),(-1,-1), 1.5, GOLD),
+    ]))
+    return t
 
-spec_col4 = [
-    spec_para("Size: 70 × 140 cm  |  GSM: 400 GSM"),
-    spec_para("Material: 100% Cotton (Ring Spun)"),
-    spec_para("Color: White Only  |  Individually polybag packed"),
-    spec_para("Set = Bath Towel + Hand Towel + Face Towel"),
-]
-pt4 = price_table(
-    ["Quantity","Price / Piece","Set (Bath+Hand+Face)"],
-    [
-        ["500 – 999 pcs",    "$ 3.20","$ 5.50 / set"],
-        ["1,000 – 2,999 pcs","$ 2.80","$ 4.80 / set"],
-        ["3,000 – 4,999 pcs","$ 2.40","$ 4.20 / set"],
-        ["5,000 + pcs",      "$ 2.00","$ 3.50 / set"],
-    ],
-    [65*mm, 57.5*mm, 57.5*mm]
-)
-combo4 = Table([[Table([[s] for s in spec_col4], colWidths=[88*mm]), pt4]],
-               colWidths=[90*mm,90*mm])
-combo4.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
-                             ('LEFTPADDING',(0,0),(-1,-1),0),
-                             ('RIGHTPADDING',(0,0),(-1,-1),0),]))
-story.append(combo4)
-story.append(moq_line("500 pieces","10–14 days"))
-story.append(Spacer(1,4*mm))
-
-# ══════════════════════════════════════════════════════════════════════════════
-# PRODUCTS 5 & 6 — PRAYER MAT + PLAIN FABRIC (side by side mini tables)
-# ══════════════════════════════════════════════════════════════════════════════
-# Left: Prayer Mat
-pm_hdr = ParagraphStyle('pmh',fontSize=9,textColor=WHITE,
-                         fontName='Helvetica-Bold',alignment=TA_CENTER,leading=13)
-pm_sub = ParagraphStyle('pms',fontSize=7,textColor=GOLD,
-                         fontName='Helvetica',alignment=TA_CENTER,leading=10)
-pm_head = Table([[Paragraph("5.  PRAYER MAT — Janamaz",pm_hdr)],
-                  [Paragraph("Cotton Velvet  |  60×110 cm",pm_sub)]],
-                colWidths=[86*mm])
-pm_head.setStyle(TableStyle([
-    ('BACKGROUND',(0,0),(-1,-1),MAROON),
-    ('TOPPADDING',(0,0),(-1,-1),4),('BOTTOMPADDING',(0,0),(-1,-1),4),
-    ('LEFTPADDING',(0,0),(-1,-1),6),('RIGHTPADDING',(0,0),(-1,-1),6),
-]))
-
-pm_price = price_table(
+# Prayer Mat block
+pm_specs = [spec("Size: 60 × 110 cm  |  Cotton/Poly Velvet"),
+            spec("Design: Mosque / Geometric prints"),
+            spec("Colours: Green, Cream, Red, Blue")]
+pm_pt = price_tbl(
     ["Quantity","Price / Piece"],
-    [["500–999 pcs","$ 2.50"],["1,000–2,999","$ 2.00"],
-     ["3,000–4,999","$ 1.60"],["5,000+ pcs", "$ 1.30"]],
-    [43*mm, 43*mm]
-)
-pm_specs = [
-    spec_para("Size: 60 × 110 cm"),
-    spec_para("Material: Cotton/Polyester Velvet"),
-    spec_para("Design: Mosque / Geometric"),
-    spec_para("Colors: Green, Cream, Red, Blue"),
-]
-pm_block = Table(
-    [[pm_head],[Table([[s] for s in pm_specs],colWidths=[86*mm])],[pm_price],
-     [moq_line("500 pcs","7–10 days")]],
-    colWidths=[86*mm]
-)
-pm_block.setStyle(TableStyle([('LEFTPADDING',(0,0),(-1,-1),0),
-                               ('RIGHTPADDING',(0,0),(-1,-1),0),
-                               ('TOPPADDING',(0,0),(-1,-1),1),
-                               ('BOTTOMPADDING',(0,0),(-1,-1),1),]))
+    [["500 – 999 pcs","$ 2.50"],["1,000 – 2,999","$ 2.00"],
+     ["3,000 – 4,999","$ 1.60"],["5,000 + pcs",  "$ 1.30"]],
+    [42.5*mm, 42.5*mm])
+pm_blk = Table(
+    [[mini_sec("05","PRAYER MAT — Janamaz","Cotton Velvet  |  60 × 110 cm")],
+     [Table([[s] for s in pm_specs], colWidths=[85*mm])],
+     [pm_pt],
+     [moq("500 pcs","7–10 days")]],
+    colWidths=[85*mm])
+pm_blk.setStyle(TableStyle([
+    ('LEFTPADDING',  (0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),
+    ('TOPPADDING',   (0,0),(-1,-1),1),('BOTTOMPADDING',(0,0),(-1,-1),1),]))
 
-# Right: Plain Cotton Fabric
-pf_hdr = ParagraphStyle('pfh',fontSize=9,textColor=WHITE,
-                         fontName='Helvetica-Bold',alignment=TA_CENTER,leading=13)
-pf_sub = ParagraphStyle('pfs',fontSize=7,textColor=GOLD,
-                         fontName='Helvetica',alignment=TA_CENTER,leading=10)
-pf_head = Table([[Paragraph("6.  PLAIN WHITE COTTON FABRIC",pf_hdr)],
-                  [Paragraph("Bulk Roll  |  100% Cotton Poplin",pf_sub)]],
-                colWidths=[86*mm])
-pf_head.setStyle(TableStyle([
-    ('BACKGROUND',(0,0),(-1,-1),MAROON),
-    ('TOPPADDING',(0,0),(-1,-1),4),('BOTTOMPADDING',(0,0),(-1,-1),4),
-    ('LEFTPADDING',(0,0),(-1,-1),6),('RIGHTPADDING',(0,0),(-1,-1),6),
-]))
-pf_price = price_table(
+# Plain Cotton block
+pf_specs = [spec("Material: 100% Cotton Poplin"),
+            spec("Width: 150 cm / 240 cm  |  GSM: 80–100"),
+            spec("Colour: White Bleached / Off-White")]
+pf_pt = price_tbl(
     ["Quantity","Price / Meter"],
-    [["200–499 meters","$ 1.10"],["500–999 meters","$ 0.95"],
-     ["1,000–2,999 mtr","$ 0.80"],["3,000+ meters","$ 0.65"]],
-    [43*mm, 43*mm]
-)
-pf_specs = [
-    spec_para("Material: 100% Cotton Poplin"),
-    spec_para("Width: 150 cm / 240 cm available"),
-    spec_para("GSM: 80–100 GSM"),
-    spec_para("Color: White (bleached) / Off-White"),
-]
-pf_block = Table(
-    [[pf_head],[Table([[s] for s in pf_specs],colWidths=[86*mm])],[pf_price],
-     [moq_line("200 meters","7–10 days")]],
-    colWidths=[86*mm]
-)
-pf_block.setStyle(TableStyle([('LEFTPADDING',(0,0),(-1,-1),0),
-                               ('RIGHTPADDING',(0,0),(-1,-1),0),
-                               ('TOPPADDING',(0,0),(-1,-1),1),
-                               ('BOTTOMPADDING',(0,0),(-1,-1),1),]))
+    [["200 – 499 m",   "$ 1.10"],["500 – 999 m",   "$ 0.95"],
+     ["1,000 – 2,999 m","$ 0.80"],["3,000 + m",     "$ 0.65"]],
+    [42.5*mm, 42.5*mm])
+pf_blk = Table(
+    [[mini_sec("06","PLAIN WHITE COTTON FABRIC","Bulk Roll  |  100% Cotton Poplin")],
+     [Table([[s] for s in pf_specs], colWidths=[85*mm])],
+     [pf_pt],
+     [moq("200 meters","7–10 days")]],
+    colWidths=[85*mm])
+pf_blk.setStyle(TableStyle([
+    ('LEFTPADDING',  (0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),0),
+    ('TOPPADDING',   (0,0),(-1,-1),1),('BOTTOMPADDING',(0,0),(-1,-1),1),]))
 
-row56 = Table([[pm_block, pf_block]], colWidths=[88*mm,92*mm])
+row56 = Table([[pm_blk, Spacer(8*mm,1), pf_blk]],
+              colWidths=[87*mm, 4*mm, 87*mm])
 row56.setStyle(TableStyle([
-    ('VALIGN',(0,0),(-1,-1),'TOP'),
-    ('LEFTPADDING',(0,0),(-1,-1),0),
-    ('RIGHTPADDING',(0,0),(-1,-1),0),
-]))
+    ('VALIGN',       (0,0),(-1,-1),'TOP'),
+    ('LEFTPADDING',  (0,0),(-1,-1),0),
+    ('RIGHTPADDING', (0,0),(-1,-1),0),]))
 story.append(row56)
-story.append(Spacer(1,5*mm))
+story.append(Spacer(1, 4*mm))
 
-# ── TERMS FOOTER ──────────────────────────────────────────────────────────────
-terms_title = ParagraphStyle('tt',fontSize=9,textColor=WHITE,
-                              fontName='Helvetica-Bold',alignment=TA_CENTER,leading=13)
-terms_body  = ParagraphStyle('tb',fontSize=7.5,textColor=DARK_TEXT,
-                              fontName='Helvetica',alignment=TA_CENTER,leading=11)
+# ── TERMS BAR ─────────────────────────────────────────────────────────────────
+terms_items = [
+    ("Payment", "30% Advance | 70% Before Shipment"),
+    ("Prices",  "FOB Karachi (USD)"),
+    ("Samples", "Available on Request"),
+    ("Validity","30 Days from Date of Issue"),
+]
+ts_hdr = ps('tsh', 8, WHITE,  bold=True, align=TA_CENTER)
+ts_val = ps('tsv', 7.5, DARK, align=TA_CENTER, leading=11)
+ts_lbl = ps('tsl', 7,  GOLD,  align=TA_CENTER, leading=10)
+terms_cells = [[Paragraph(l, ts_lbl), Paragraph(v, ts_val)]
+               for l,v in terms_items]
+terms_inner = Table(terms_cells,
+                    colWidths=[22*mm, 22*mm, 18*mm, 22*mm,
+                                18*mm, 28*mm, 18*mm, 30*mm])
 
-terms_data = [
-    [Paragraph("TERMS & CONDITIONS", terms_title)],
+# flatten into single row
+flat_cells   = []
+flat_widths  = []
+for i,(l,v) in enumerate(terms_items):
+    flat_cells.append(Paragraph(l, ts_lbl))
+    flat_cells.append(Paragraph(v, ts_val))
+    flat_widths += [22*mm, (CW//4 - 22*mm)]
+
+terms_row = Table(
+    [[Paragraph("TERMS & CONDITIONS", ts_hdr)]] +
+    [[Table([[Paragraph(l,ts_lbl), Paragraph(v,ts_val)]
+             for l,v in terms_items],
+            colWidths=[20*mm,24*mm,16*mm,30*mm,16*mm,26*mm,18*mm,28*mm])]],
+    colWidths=[CW])
+
+# Simpler flat layout
+tc_data = [[
+    Paragraph(f'<font color="#C9A84C"><b>Payment:</b></font>  30% Advance | 70% Before Shipment', ts_val),
+    Paragraph(f'<font color="#C9A84C"><b>Prices:</b></font>  FOB Karachi (USD)', ts_val),
+    Paragraph(f'<font color="#C9A84C"><b>Samples:</b></font>  Available on Request', ts_val),
+    Paragraph(f'<font color="#C9A84C"><b>Validity:</b></font>  30 Days from Issue', ts_val),
+]]
+tc = Table(
+    [[Paragraph("TERMS & CONDITIONS", ts_hdr)], tc_data],
+    colWidths=[CW])
+tc.setStyle(TableStyle([
+    ('BACKGROUND',    (0,0),(-1,0), MAROON),
+    ('BACKGROUND',    (0,1),(-1,1), CREAM2),
+    ('VALIGN',        (0,0),(-1,-1),'MIDDLE'),
+    ('TOPPADDING',    (0,0),(-1,-1), 5),
+    ('BOTTOMPADDING', (0,0),(-1,-1), 5),
+    ('LEFTPADDING',   (0,0),(-1,-1), 8),
+    ('RIGHTPADDING',  (0,0),(-1,-1), 8),
+    ('BOX',           (0,0),(-1,-1), 1.2, GOLD),
+    ('LINEABOVE',     (0,1),(-1,1), 0.8, GOLD),
+]))
+story.append(tc)
+story.append(Spacer(1, 3*mm))
+
+# ── CONTACT FOOTER ─────────────────────────────────────────────────────────────
+cf_data = [
+    [Paragraph("AKH  LINEN  HOUSE",
+               ps('cf1', 11, GOLD, bold=True, align=TA_CENTER, leading=15))],
+    [Paragraph("Bed Linen  •  Towels  •  Fabric  •  Prayer Mats",
+               ps('cf2', 7.5, GOLD_LITE, align=TA_CENTER, leading=11))],
+    [Spacer(1, 1*mm)],
     [Table([[
-        Paragraph("💳  Payment: 30% Advance | 70% Before Shipment", terms_body),
-        Paragraph("📦  Prices: FOB Karachi (USD)", terms_body),
-        Paragraph("🚢  Delivery: Karachi → Dubai 7–10 Days Sea", terms_body),
-        Paragraph("📋  Samples: Available on Request", terms_body),
-        Paragraph("⏱  Validity: 30 Days from Issue Date", terms_body),
-    ]], colWidths=[35*mm,36*mm,43*mm,32*mm,34*mm])]
+        Paragraph(f"WhatsApp:  {WA}",
+                  ps('cf3', 8.5, WHITE, bold=True, align=TA_LEFT, leading=12)),
+        Paragraph("Pakistan",
+                  ps('cf4', 8.5, GOLD,  bold=True, align=TA_CENTER, leading=12)),
+        Paragraph(f"Email:  {EMAIL}",
+                  ps('cf5', 8.5, WHITE, bold=True, align=TA_RIGHT, leading=12)),
+    ]], colWidths=[68*mm, 42*mm, 68*mm])],
 ]
-terms_table = Table(terms_data, colWidths=[180*mm])
-terms_table.setStyle(TableStyle([
-    ('BACKGROUND',(0,0),(-1,0), MAROON),
-    ('BACKGROUND',(0,1),(-1,1), CREAM),
-    ('TOPPADDING',(0,0),(-1,-1),4),
-    ('BOTTOMPADDING',(0,0),(-1,-1),4),
-    ('LEFTPADDING',(0,0),(-1,-1),6),
-    ('RIGHTPADDING',(0,0),(-1,-1),6),
-    ('BOX',(0,0),(-1,-1),1,GOLD),
+cf = Table(cf_data, colWidths=[CW])
+cf.setStyle(TableStyle([
+    ('BACKGROUND',    (0,0),(-1,-1), MAROON),
+    ('VALIGN',        (0,0),(-1,-1),'MIDDLE'),
+    ('TOPPADDING',    (0,0),(-1,-1), 4),
+    ('BOTTOMPADDING', (0,0),(-1,-1), 4),
+    ('LEFTPADDING',   (0,0),(-1,-1), 10),
+    ('RIGHTPADDING',  (0,0),(-1,-1), 10),
+    ('BOX',           (0,0),(-1,-1), 1.5, GOLD),
+    ('LINEABOVE',     (0,3),(-1,3), 0.8, GOLD),
 ]))
-story.append(terms_table)
-story.append(Spacer(1,3*mm))
-
-# ── CONTACT FOOTER ────────────────────────────────────────────────────────────
-contact_style = ParagraphStyle('cs',fontSize=8,textColor=WHITE,
-                                fontName='Helvetica-Bold',alignment=TA_CENTER,leading=12)
-contact_sub   = ParagraphStyle('css',fontSize=7.5,textColor=GOLD,
-                                fontName='Helvetica',alignment=TA_CENTER,leading=11)
-contact_data = [
-    [Paragraph("AKH LINEN HOUSE — Bed Linen • Towel • Etc", contact_style)],
-    [Paragraph("WhatsApp: [Your Number]   |   Email: [Your Email]   |   Pakistan", contact_sub)],
-]
-contact_table = Table(contact_data, colWidths=[180*mm])
-contact_table.setStyle(TableStyle([
-    ('BACKGROUND',(0,0),(-1,-1), MAROON),
-    ('TOPPADDING',(0,0),(-1,-1),4),
-    ('BOTTOMPADDING',(0,0),(-1,-1),4),
-    ('LEFTPADDING',(0,0),(-1,-1),6),
-    ('RIGHTPADDING',(0,0),(-1,-1),6),
-]))
-story.append(contact_table)
+story.append(cf)
 
 # ── BUILD ──────────────────────────────────────────────────────────────────────
-doc.build(story)
+doc.build(story, onFirstPage=page_border, onLaterPages=page_border)
 print("PDF generated successfully!")
