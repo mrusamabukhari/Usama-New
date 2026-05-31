@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKH Linen House — Export Process Flowchart</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maroon: #6B1535;
+    --gold:   #C9A84C;
+    --navy:   #0F1F3D;
+    --white:  #ffffff;
+    --bg:     #F5F0E8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    padding: 24px 16px 40px;
+  }
+
+  .page {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, var(--maroon) 0%, #8B1F42 100%);
+    border-radius: 16px;
+    padding: 22px 20px 18px;
+    text-align: center;
+    margin-bottom: 6px;
+    box-shadow: 0 4px 20px rgba(107,21,53,0.35);
+    border: 2px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.12);
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: var(--gold);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    text-align: left;
+    line-height: 1.2;
+  }
+  .brand-sub {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .header h1 span { color: var(--gold); }
+  .header p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    font-style: italic;
+  }
+  .route-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.3px;
+  }
+
+  /* ── ARROW ── */
+  .arrow {
+    display: flex;
+    justify-content: center;
+    height: 32px;
+    align-items: center;
+    color: var(--maroon);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .arrow.small { height: 20px; font-size: 18px; }
+
+  /* ── START BOX ── */
+  .start-box {
+    background: var(--white);
+    border: 2.5px solid var(--navy);
+    border-radius: 12px;
+    padding: 14px 20px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  }
+  .start-box .title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .start-box .sub {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* ── STEP CARD ── */
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 16px 14px 14px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.09);
+    border-left: 4px solid var(--c, #ccc);
+    position: relative;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .step:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.13);
+  }
+  .step-icon {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: var(--c, #ccc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  }
+  .step-body { flex: 1; }
+  .step-num {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--c);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .step-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+  .step-desc {
+    font-size: 11.5px;
+    color: #555;
+    line-height: 1.55;
+  }
+  .step-badge {
+    display: inline-block;
+    background: var(--c);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 5px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── SPLIT SECTION ── */
+  .split-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy);
+    background: #EEE8DA;
+    border-radius: 8px;
+    padding: 6px 14px;
+    margin: 0 20px;
+  }
+  .split-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .split-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 12px;
+    text-align: center;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.09);
+    border-top: 4px solid var(--c);
+  }
+  .split-card .s-icon {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--c);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  }
+  .split-card .s-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .split-card .s-desc {
+    font-size: 10.5px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: linear-gradient(135deg, var(--maroon) 0%, #8B1F42 100%);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1.5px solid var(--gold);
+    margin-top: 6px;
+    box-shadow: 0 4px 16px rgba(107,21,53,0.25);
+  }
+  .footer-left h3 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .footer-left p {
+    font-size: 10px;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .footer-right {
+    text-align: right;
+  }
+  .footer-right p {
+    font-size: 11px;
+    color: var(--white);
+    font-weight: 600;
+  }
+  .footer-right small {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .step:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-icon">🧵</div>
+      <div>
+        <div class="brand-name">AKH LINEN HOUSE</div>
+        <div class="brand-sub">Pakistan Textile Exporter</div>
+      </div>
+    </div>
+    <h1>FROM ORDER TO YOUR <span>DOOR</span></h1>
+    <p>Complete Export Process — Pakistan to Somalia</p>
+    <div class="route-badge">🇵🇰 Karachi &nbsp;→&nbsp; ⛵ Maersk &nbsp;→&nbsp; 🇸🇴 Mogadishu</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- START: BUYER INQUIRY -->
+  <div class="start-box">
+    <div class="title">📩 BUYER INQUIRY / ORDER REQUEST</div>
+    <div class="sub">Somalia Importer contacts AKH Linen House via WhatsApp or Email</div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- STEP 1 -->
+  <div class="step" style="--c:#E53935;">
+    <div class="step-icon">📋</div>
+    <div class="step-body">
+      <div class="step-num">Step 01</div>
+      <div class="step-name">ORDER CONFIRMATION</div>
+      <div class="step-desc">AKH sends Proforma Invoice with CIF Mogadishu price, product specs, HS codes, and payment terms. Buyer reviews and confirms order.</div>
+      <span class="step-badge">Proforma Invoice Issued</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 2 -->
+  <div class="step" style="--c:#F57C00;">
+    <div class="step-icon">💳</div>
+    <div class="step-body">
+      <div class="step-num">Step 02</div>
+      <div class="step-name">ADVANCE PAYMENT — 50%</div>
+      <div class="step-desc">Buyer sends 50% advance via Dahabshiil (bank transfer), Western Union, or bank TT. AKH confirms receipt and begins production order.</div>
+      <span class="step-badge">Payment Confirmed ✅</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 3 -->
+  <div class="step" style="--c:#FBC02D;">
+    <div class="step-icon">🏭</div>
+    <div class="step-body">
+      <div class="step-num">Step 03</div>
+      <div class="step-name">FACTORY PRODUCTION</div>
+      <div class="step-desc">Faisalabad mill begins weaving Macawiis checked cotton / stitching Bed Linen / looming Towels to exact specifications. 100% cotton, correct GSM and size.</div>
+      <span class="step-badge">21–28 Days Production</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 4 -->
+  <div class="step" style="--c:#43A047;">
+    <div class="step-icon">🔍</div>
+    <div class="step-body">
+      <div class="step-num">Step 04</div>
+      <div class="step-name">QUALITY INSPECTION</div>
+      <div class="step-desc">AKH inspects every batch: fabric weight (GSM), dimensions, stitch count, colour matching, and labeling. Defective pieces rejected before packing.</div>
+      <span class="step-badge">AKH Quality Pass Required</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 5 -->
+  <div class="step" style="--c:#00897B;">
+    <div class="step-icon">🏅</div>
+    <div class="step-body">
+      <div class="step-num">Step 05</div>
+      <div class="step-name">BUREAU VERITAS — COC</div>
+      <div class="step-desc">Bureau Veritas inspector visits Karachi warehouse. Verifies quantity, quality, and labeling. Issues Certificate of Conformity (COC) — mandatory for Mogadishu customs clearance.</div>
+      <span class="step-badge">COC Certificate Issued</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 6 -->
+  <div class="step" style="--c:#1E88E5;">
+    <div class="step-icon">📄</div>
+    <div class="step-body">
+      <div class="step-num">Step 06</div>
+      <div class="step-name">DOCUMENT PREPARATION</div>
+      <div class="step-desc">Commercial Invoice • Packing List • Certificate of Origin (Chamber of Commerce) • Insurance Certificate • WeBOC/PSW Export Declaration • Form E (bank).</div>
+      <span class="step-badge">All Documents Ready</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 7 -->
+  <div class="step" style="--c:#3949AB;">
+    <div class="step-icon">⚓</div>
+    <div class="step-body">
+      <div class="step-num">Step 07</div>
+      <div class="step-name">KARACHI PORT LOADING</div>
+      <div class="step-desc">Goods loaded into 20ft container at Karachi Port. Container sealed. Bill of Lading issued by Maersk / MSC / CMA CGM. Container number shared with buyer.</div>
+      <span class="step-badge">Bill of Lading Issued</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 8 -->
+  <div class="step" style="--c:#8E24AA;">
+    <div class="step-icon">🚢</div>
+    <div class="step-body">
+      <div class="step-num">Step 08</div>
+      <div class="step-name">SEA FREIGHT TO MOGADISHU</div>
+      <div class="step-desc">Maersk Musafir Express departs Karachi. Transit via Salalah (Oman) hub. Arrives Mogadishu Port. Live tracking available on Maersk website.</div>
+      <span class="step-badge">10–14 Days Transit</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 9 -->
+  <div class="step" style="--c:#D81B60;">
+    <div class="step-icon">🛃</div>
+    <div class="step-body">
+      <div class="step-num">Step 09</div>
+      <div class="step-name">MOGADISHU CUSTOMS CLEARANCE</div>
+      <div class="step-desc">Buyer's clearing agent presents COC + Commercial Invoice + B/L to Somalia Customs. 10% import duty paid on CIF value. Container released in 3–5 days.</div>
+      <span class="step-badge">10% Duty on CIF Value</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 10 -->
+  <div class="step" style="--c:#00ACC1;">
+    <div class="step-icon">🚛</div>
+    <div class="step-body">
+      <div class="step-num">Step 10</div>
+      <div class="step-name">DELIVERY TO BUYER</div>
+      <div class="step-desc">Container transported to buyer's warehouse in Mogadishu. Goods unloaded and counted. Buyer confirms receipt matches invoice quantity and quality.</div>
+      <span class="step-badge">Goods Received ✅</span>
+    </div>
+  </div>
+
+  <div class="arrow small">↓</div>
+
+  <!-- STEP 11 -->
+  <div class="step" style="--c:#C9A84C;">
+    <div class="step-icon">💰</div>
+    <div class="step-body">
+      <div class="step-num">Step 11</div>
+      <div class="step-name">FINAL PAYMENT — 50% BALANCE</div>
+      <div class="step-desc">Buyer sends remaining 50% via Dahabshiil / Western Union / bank TT upon receiving goods. AKH confirms payment. Transaction complete.</div>
+      <span class="step-badge">Order 100% Complete ✅</span>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- SPLIT: NEXT STEPS -->
+  <div class="split-title">📦 WHAT HAPPENS NEXT</div>
+  <div class="split-row">
+    <div class="split-card" style="--c:#43A047;">
+      <div class="s-icon">🔁</div>
+      <div class="s-name">REPEAT ORDER BEGINS</div>
+      <div class="s-desc">Buyer reorders based on market response. Volume increases. Price improves with each container.</div>
+    </div>
+    <div class="split-card" style="--c:#6B1535;">
+      <div class="s-icon">🤝</div>
+      <div class="s-name">EXCLUSIVE PARTNERSHIP</div>
+      <div class="s-desc">AKH offers area exclusivity. Buyer becomes sole distributor of AKH products in their market.</div>
+    </div>
+  </div>
+
+  <div class="arrow">↓</div>
+
+  <!-- TOTAL TIME -->
+  <div style="background:var(--white);border-radius:14px;padding:16px;text-align:center;box-shadow:0 3px 14px rgba(0,0,0,0.1);border:2px dashed var(--gold);">
+    <div style="font-size:13px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Total Order to Delivery Timeline</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div style="background:#FFF8E1;border-radius:10px;padding:10px 6px;">
+        <div style="font-size:22px;font-weight:900;color:#F57C00;">28</div>
+        <div style="font-size:10px;color:#888;font-weight:600;">Days Production</div>
+      </div>
+      <div style="background:#E8F5E9;border-radius:10px;padding:10px 6px;">
+        <div style="font-size:22px;font-weight:900;color:#43A047;">14</div>
+        <div style="font-size:10px;color:#888;font-weight:600;">Days Shipping</div>
+      </div>
+      <div style="background:#FCE4EC;border-radius:10px;padding:10px 6px;">
+        <div style="font-size:22px;font-weight:900;color:#E53935;">42</div>
+        <div style="font-size:10px;color:#888;font-weight:600;">Days Total</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:#999;font-style:italic;">Order today → goods in Mogadishu in 6 weeks</div>
+  </div>
+
+  <div style="height:10px;"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <h3>AKH LINEN HOUSE 🧵</h3>
+      <p>Pakistan Direct Textile Exporter</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:9px;margin-top:2px;">Macawiis • Bed Linen • Towels • Baati • Prayer Mats</p>
+    </div>
+    <div class="footer-right">
+      <p>📱 +92 334 006 5781</p>
+      <small>✉ akhlinenhouse@gmail.com</small>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
