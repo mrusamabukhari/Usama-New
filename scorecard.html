@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pakistan vs India — DRC Rice Export Scorecard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f0;
+    color: #1a2e1a;
+    padding: 24px 16px;
+  }
+
+  .wrapper { max-width: 900px; margin: 0 auto; }
+
+  /* HEADER */
+  .header {
+    background: #1a7a3c;
+    border-radius: 10px 10px 0 0;
+    padding: 22px 20px 14px;
+    text-align: center;
+  }
+  .header h1 {
+    color: #fff;
+    font-size: 26px;
+    letter-spacing: 1px;
+  }
+  .header .flags { font-size: 30px; }
+  .subheader {
+    background: #1a2e1a;
+    padding: 10px 20px;
+    text-align: center;
+    color: #c8a200;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
+  }
+
+  /* SCORECARD TABLE */
+  .section-title {
+    background: #1a2e1a;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+    border-radius: 6px 6px 0 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead th {
+    background: #1a2e1a;
+    color: #fff;
+    padding: 12px 14px;
+    text-align: center;
+    font-size: 14px;
+  }
+  thead th:first-child { text-align: left; }
+
+  tbody tr:nth-child(odd)  { background: #f4f8f4; }
+  tbody tr:nth-child(even) { background: #fff; }
+
+  td {
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    line-height: 1.5;
+  }
+
+  td.factor {
+    font-weight: 700;
+    font-size: 13px;
+    color: #1a2e1a;
+    width: 30%;
+  }
+  td.factor span {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  td.pak {
+    background: #e8f5ec !important;
+    text-align: center;
+    width: 35%;
+  }
+  td.ind {
+    background: #fdf0ef !important;
+    text-align: center;
+    width: 35%;
+  }
+
+  .win  { color: #1a7a3c; font-weight: 700; }
+  .lose { color: #c0392b; font-weight: 700; }
+  .warn { color: #c8a200; font-weight: 700; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .badge-green { background: #1a7a3c; color: #fff; }
+  .badge-red   { background: #c0392b; color: #fff; }
+  .badge-gold  { background: #c8a200; color: #fff; }
+
+  /* VERDICT ROW */
+  tr.verdict-row td {
+    background: #1a2e1a !important;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px;
+  }
+  tr.verdict-row td.pak-verdict { background: #1a7a3c !important; }
+  tr.verdict-row td.ind-verdict { background: #7a1a1a !important; }
+
+  /* STATS STRIP */
+  .stats-strip {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    flex: 1;
+    min-width: 140px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: 4px solid #1a7a3c;
+    border-radius: 6px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-card .number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a7a3c;
+    line-height: 1.1;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    color: #555;
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  /* PITCH SECTION */
+  .pitch-header {
+    background: #1a7a3c;
+    color: #fff;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 6px 6px 0 0;
+    margin-top: 20px;
+  }
+
+  .pitch-table { width: 100%; border-collapse: collapse; }
+  .pitch-table td { border: 1px solid #ddd; padding: 11px 14px; vertical-align: middle; }
+  .pitch-table tr:nth-child(odd)  td { background: #fff; }
+  .pitch-table tr:nth-child(even) td { background: #f4f8f4; }
+
+  .pitch-num {
+    background: #1a7a3c !important;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    width: 40px;
+  }
+  .pitch-title {
+    color: #1a7a3c;
+    font-weight: 700;
+    font-size: 13px;
+    width: 160px;
+  }
+  .pitch-body { font-size: 13px; line-height: 1.6; }
+
+  /* FINAL VERDICT */
+  .final-verdict {
+    background: #e8f5ec;
+    border-left: 5px solid #1a7a3c;
+    border-right: 5px solid #1a7a3c;
+    padding: 16px 20px;
+    margin-top: 20px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #1a2e1a;
+  }
+  .final-verdict strong { color: #1a7a3c; font-size: 16px; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 18px; }
+    td { font-size: 12px; padding: 8px 9px; }
+    .stat-card .number { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="flags">🇵🇰 &nbsp; vs &nbsp; 🇮🇳</div>
+    <h1>Pakistan vs India</h1>
+  </div>
+  <div class="subheader">
+    Summary Scorecard — Rice Export to Democratic Republic of Congo (DRC)
+  </div>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="number">13</div>
+      <div class="label">Days faster delivery<br>than India to Matadi</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">3.6×</div>
+      <div class="label">Fewer EU food safety<br>alerts than India (2024)</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">18×</div>
+      <div class="label">Fewer EU rice<br>rejections than India</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">$445</div>
+      <div class="label">Competitive FOB price<br>per MT (5% broken)</div>
+    </div>
+  </div>
+
+  <!-- SCORECARD TABLE -->
+  <div class="section-title">📊 Head-to-Head Scorecard</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Factor</th>
+        <th>🇵🇰 Pakistan</th>
+        <th>🇮🇳 India</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="factor">Transit Time<span>Karachi / Mumbai → Matadi Port</span></td>
+        <td class="pak">
+          <strong>32–37 days</strong><br>
+          <span class="badge badge-green">✅ FASTEST</span>
+        </td>
+        <td class="ind">
+          <strong>45–50 days</strong><br>
+          <span class="badge badge-red">❌ 13 days slower</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">Export Reliability<span>Government export bans history</span></td>
+        <td class="pak">
+          <strong>Never banned exports</strong><br>
+          <span class="badge badge-green">✅ STABLE SUPPLY</span>
+        </td>
+        <td class="ind">
+          <strong>Banned 2023–2024</strong><br>
+          <span class="badge badge-red">❌ 14-month disruption</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">EU Food Safety Alerts<span>Pesticide residues, 2024</span></td>
+        <td class="pak">
+          <strong class="win">74 alerts</strong><br>
+          <span class="badge badge-green">✅ LOW RISK</span>
+        </td>
+        <td class="ind">
+          <strong class="lose">264 alerts</strong><br>
+          <span class="badge badge-red">❌ 3.6× more than Pakistan</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">EU Non-Basmati Rejections<span>2024 shipment rejections</span></td>
+        <td class="pak">
+          <strong class="win">2 rejections</strong><br>
+          <span class="badge badge-green">✅ EXCELLENT</span>
+        </td>
+        <td class="ind">
+          <strong class="lose">37 rejections</strong><br>
+          <span class="badge badge-red">❌ 18× more than Pakistan</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">Price<span>FOB per MT — 5% broken white rice</span></td>
+        <td class="pak">
+          <strong>~$445 / MT</strong><br>
+          <span class="badge badge-green">✅ Competitive</span>
+        </td>
+        <td class="ind">
+          <strong>~$400–430 / MT</strong><br>
+          <span class="badge badge-gold">⚠️ Slightly cheaper</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">Basmati Quality<span>Super Basmati, 1121, Super Kernel</span></td>
+        <td class="pak">
+          <strong>World-class</strong><br>EU exports +15% (FY2024–25)<br>
+          <span class="badge badge-green">✅ PREMIUM</span>
+        </td>
+        <td class="ind">
+          <strong>Good — but declining EU trust</strong><br>
+          <span class="badge badge-gold">⚠️ Under pressure</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">Diplomatic Goodwill in DRC<span>Government &amp; institutional trust</span></td>
+        <td class="pak">
+          <strong>MONUSCO Peacekeeping</strong><br>20+ years presence<br>
+          <span class="badge badge-green">✅ STRONG</span>
+        </td>
+        <td class="ind">
+          Moderate<br>
+          <span class="badge badge-gold">⚠️ Average</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="factor">Supply Diversification<span>Risk for DRC buyer</span></td>
+        <td class="pak">
+          <strong>Safe backup source</strong><br>
+          <span class="badge badge-green">✅ REDUCES BUYER RISK</span>
+        </td>
+        <td class="ind">
+          <strong>Single-source dependency</strong><br>
+          <span class="badge badge-red">❌ 2023 ban proved the risk</span>
+        </td>
+      </tr>
+      <tr class="verdict-row">
+        <td>🏆 OVERALL VERDICT</td>
+        <td class="pak-verdict">Win on Reliability,<br>Safety &amp; Speed</td>
+        <td class="ind-verdict">Price edge only<br>(short-term)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PITCH POINTS -->
+  <div class="pitch-header">💬 Key Pitch Points — For DRC Buyer Already Buying from India</div>
+  <table class="pitch-table">
+    <tr>
+      <td class="pitch-num">1</td>
+      <td class="pitch-title">Supply Reliability</td>
+      <td class="pitch-body">India banned rice exports in 2023 for <strong>14 months without warning</strong>. Pakistan has <strong>never banned exports</strong>. Use Pakistan as your secure backup supplier so you are never stuck again.</td>
+    </tr>
+    <tr>
+      <td class="pitch-num">2</td>
+      <td class="pitch-title">Food Safety</td>
+      <td class="pitch-body">Pakistan had only <strong>74 EU food safety alerts</strong> vs <strong>264 for India</strong> in 2024. Pakistani rice is cleaner, safer, and better for your customers and their families in Kinshasa.</td>
+    </tr>
+    <tr>
+      <td class="pitch-num">3</td>
+      <td class="pitch-title">Faster Delivery</td>
+      <td class="pitch-body">Karachi to Matadi: <strong>32–37 days</strong>. Mumbai to Matadi: <strong>45–50 days</strong>. You receive your rice <strong>2 weeks earlier</strong> — less port time, less spoilage, lower demurrage costs.</td>
+    </tr>
+    <tr>
+      <td class="pitch-num">4</td>
+      <td class="pitch-title">Trial With Zero Risk</td>
+      <td class="pitch-body">Start with <strong>1–2 containers as a trial</strong>. Pay <strong>30% advance + 70% on Bill of Lading</strong>. A <strong>free sample bag</strong> is available before any commitment.</td>
+    </tr>
+    <tr>
+      <td class="pitch-num">5</td>
+      <td class="pitch-title">Diplomatic Trust</td>
+      <td class="pitch-body">Pakistan has served in <strong>UN MONUSCO peacekeeping in DRC for 20+ years</strong>. We are a long-term partner with your country — not just a seller looking for a deal.</td>
+    </tr>
+  </table>
+
+  <!-- FINAL VERDICT -->
+  <div class="final-verdict">
+    <strong>✅ Pakistan CAN WIN</strong><br>
+    Pakistan wins on <strong>Reliability, Food Safety, Speed &amp; Diplomatic Trust</strong>.<br>
+    India's only edge is a small price difference — easily offset by <strong>faster delivery, lower spoilage, and zero supply-ban risk</strong>.
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Sources: ProPakistani &nbsp;·&nbsp; S&amp;P Global &nbsp;·&nbsp; Al Jazeera &nbsp;·&nbsp; Agri-Food Update &nbsp;·&nbsp; IFPRI &nbsp;·&nbsp; FW Freight &nbsp;·&nbsp; Concave Agri &nbsp;·&nbsp; TDAP
+  </div>
+
+</div>
+</body>
+</html>
