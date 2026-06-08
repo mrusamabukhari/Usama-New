@@ -100,19 +100,16 @@ c.drawString(10*mm, y, "Price Quotation — Long Grain Basmati Rice (Pakistan Or
 y -= 6*mm
 
 # Table header
-col = [10*mm, 60*mm, 95*mm, 125*mm, 158*mm]
+col = [10*mm, 70*mm, 115*mm, 158*mm]
 hdr_h = 9*mm
 c.setFillColor(DARK)
 c.rect(10*mm, y - hdr_h + 2*mm, PAGE_W - 20*mm, hdr_h, fill=1, stroke=0)
 c.setFillColor(GOLD)
 c.setFont("Helvetica-Bold", 9)
-headers = ["Grade / Broken %", "FOB Karachi", "CFR Durban (Est.)", "Per Container (MT)", "Total 5 Cont."]
+headers = ["Grade / Broken %", "FOB Karachi", "Per Container (~25 MT)", "Total 5 Containers"]
 for i, h in enumerate(headers):
     c.drawString(col[i] + 2*mm, y - 4*mm, h)
 y -= hdr_h
-
-# Freight estimate Karachi to Durban ~$900/container = $36/MT
-freight = 36  # USD per MT approx
 
 rows = [
     ("Long Grain Basmati  5% Broken",  491, "Premium Grade"),
@@ -126,8 +123,7 @@ for i, (grade, fob, label) in enumerate(rows):
     c.setFillColor(bg)
     c.rect(10*mm, y - 9*mm + 2*mm, PAGE_W - 20*mm, 9*mm, fill=1, stroke=0)
 
-    cfr = fob + freight
-    per_cont = fob * 25  # 25MT per 20ft
+    per_cont = fob * 25
     total_5 = per_cont * 5
 
     c.setFillColor(DARK)
@@ -138,11 +134,10 @@ for i, (grade, fob, label) in enumerate(rows):
     c.drawString(col[1] + 2*mm, y - 5*mm, f"USD {fob}/MT")
     c.setFillColor(DARK)
     c.setFont("Helvetica", 8.5)
-    c.drawString(col[2] + 2*mm, y - 5*mm, f"USD {cfr}/MT")
-    c.drawString(col[3] + 2*mm, y - 5*mm, f"~USD {per_cont:,}")
+    c.drawString(col[2] + 2*mm, y - 5*mm, f"~USD {per_cont:,}")
     c.setFillColor(BLUE)
     c.setFont("Helvetica-Bold", 8.5)
-    c.drawString(col[4] + 2*mm, y - 5*mm, f"~USD {total_5:,}")
+    c.drawString(col[3] + 2*mm, y - 5*mm, f"~USD {total_5:,}")
     y -= 9*mm
 
 # Highlight row — recommended
@@ -163,7 +158,7 @@ y -= 6*mm
 
 specs = [
     ("Product", "Long Grain Basmati Rice — Pakistan Origin"),
-    ("Grain Length", "7.0 mm+ (extra long grain)"),
+    ("Grain Length", "6.0 mm+ (long grain)"),
     ("Moisture", "Maximum 13.5%"),
     ("Broken %", "As per grade ordered (5% / 15% / 25% / 100%)"),
     ("Foreign Matter", "Maximum 0.1%"),
